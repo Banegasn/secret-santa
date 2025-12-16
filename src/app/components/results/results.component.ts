@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { SecretSantaService, Participant } from '../../services/secret-santa.service';
 
@@ -16,11 +16,18 @@ export class ResultsComponent implements OnInit {
 
   constructor(
     private secretSantaService: SecretSantaService,
-    private router: Router
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
-    // Get participants from sessionStorage
+    // Get participants from sessionStorage (only on browser)
+    if (!isPlatformBrowser(this.platformId)) {
+      // On server side, redirect to home
+      this.router.navigate(['/']);
+      return;
+    }
+
     const stored = sessionStorage.getItem('secretSantaParticipants');
     if (!stored) {
       this.router.navigate(['/']);
@@ -54,13 +61,18 @@ export class ResultsComponent implements OnInit {
   }
 
   shareToWhatsApp(url: string, name: string): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     const message = encodeURIComponent(`🎅 Your Secret Santa link is ready! Click here to find out who you're giving a gift to: ${url}`);
     const whatsappUrl = `https://wa.me/?text=${message}`;
     window.open(whatsappUrl, '_blank');
   }
 
   startOver(): void {
-    sessionStorage.removeItem('secretSantaParticipants');
+    if (isPlatformBrowser(this.platformId)) {
+      sessionStorage.removeItem('secretSantaParticipants');
+    }
     this.router.navigate(['/']);
   }
 }

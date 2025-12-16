@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://secretsanta.app/sitemap.xml
+Sitemap: https://secret-santa.banegasn.dev/sitemap.xml
 

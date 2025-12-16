@@ -1,7 +1,7 @@
-import { Component, viewChildren, effect, signal, ElementRef, afterRender, OnInit } from '@angular/core';
+import { Component, viewChildren, effect, signal, ElementRef, afterRender, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { SecretSantaService } from '../../services/secret-santa.service';
 import { SEOService } from '../../services/seo.service';
 
@@ -23,7 +23,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private secretSantaService: SecretSantaService,
     private router: Router,
-    private seoService: SEOService
+    private seoService: SEOService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     // Watch for changes to focus inputs
     effect(() => {
@@ -91,8 +92,10 @@ export class HomeComponent implements OnInit {
 
       const participants = this.secretSantaService.assignSecretSantas(validNames);
       
-      // Store in sessionStorage for results page
-      sessionStorage.setItem('secretSantaParticipants', JSON.stringify(participants));
+      // Store in sessionStorage for results page (only on browser)
+      if (isPlatformBrowser(this.platformId)) {
+        sessionStorage.setItem('secretSantaParticipants', JSON.stringify(participants));
+      }
       
       // Navigate to results page
       this.router.navigate(['/results']);

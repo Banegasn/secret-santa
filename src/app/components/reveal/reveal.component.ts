@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SecretSantaService } from '../../services/secret-santa.service';
 import { SEOService } from '../../services/seo.service';
@@ -22,12 +22,13 @@ export class RevealComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private secretSantaService: SecretSantaService,
-    private seoService: SEOService
-  ) {}
+    private seoService: SEOService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
 
   ngOnInit(): void {
     const token = this.route.snapshot.paramMap.get('token');
-    
+
     if (!token) {
       this.errorMessage = 'Invalid link. Please check your Secret Santa link.';
       this.isLoading = false;
@@ -35,7 +36,7 @@ export class RevealComponent implements OnInit {
     }
 
     const decoded = this.secretSantaService.decodeToken(token);
-    
+
     if (!decoded) {
       this.errorMessage = 'Invalid or corrupted link. Please contact the organizer.';
       this.isLoading = false;
@@ -48,7 +49,8 @@ export class RevealComponent implements OnInit {
     this.isLoading = false;
 
     // Set SEO for reveal page with dynamic content
-    const currentUrl = window.location.href;
+    const currentUrl = isPlatformBrowser(this.platformId) && typeof window !== 'undefined' ? window.location.href : '';
+    
     this.seoService.setRevealPageSEO(
       this.participantName,
       this.assignedTo,
