@@ -64,7 +64,7 @@ export class ResultsComponent implements OnInit {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
-    const message = encodeURIComponent(`Your Secret Santa link is ready!%0aClick here to find out who you're giving a gift to: ${url}`);
+    const message = encodeURIComponent(`Your Secret Santa link is ready! Click here to find out who you're giving a gift to: ${url}`);
     const whatsappUrl = `https://wa.me/?text=${message}`;
     window.open(whatsappUrl, '_blank');
   }

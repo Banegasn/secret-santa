@@ -34,6 +34,10 @@
           <p>Happy holidays and have fun shopping! 🎅</p>
         </div>
 
+        @if (assignedTo) {
+          <app-gift-suggestions [assignedToName]="assignedTo"></app-gift-suggestions>
+        }
+
         <button
           type="button"
           (click)="createNewExchange()"

@@ -1,0 +1,25 @@
+<div class="gift-suggestions">
+  <div class="gift-header">
+    <h3>🎁 Gift Ideas for {{ assignedToName }}</h3>
+    <p class="gift-subtitle">Find the perfect gift on Amazon</p>
+  </div>
+
+  <div class="gift-grid">
+    @for (idea of giftIdeas; track idea.label) {
+      <button
+        type="button"
+        (click)="openAmazonSearch(idea)"
+        class="gift-card"
+      >
+        <span class="gift-emoji">{{ idea.emoji }}</span>
+        <span class="gift-label">{{ idea.label }}</span>
+        <span class="gift-arrow">→</span>
+      </button>
+    }
+  </div>
+
+  <p class="affiliate-disclosure">
+    As an Amazon Associate, we earn from qualifying purchases.
+  </p>
+</div>
+

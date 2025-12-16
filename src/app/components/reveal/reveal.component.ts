@@ -3,11 +3,12 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SecretSantaService } from '../../services/secret-santa.service';
 import { SEOService } from '../../services/seo.service';
+import { GiftSuggestionsComponent } from '../gift-suggestions/gift-suggestions.component';
 
 @Component({
   selector: 'app-reveal',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, GiftSuggestionsComponent],
   templateUrl: './reveal.component.html',
   styleUrl: './reveal.component.css'
 })
