@@ -1,0 +1,83 @@
+<div class="home-container">
+  <div class="content-wrapper">
+    <div class="header">
+      <div class="santa-icon">🎅</div>
+      <h1>Secret Santa Generator</h1>
+      <p class="subtitle">Create magical gift exchanges for your friends and family</p>
+    </div>
+
+    <div class="form-container">
+      <div class="form-header">
+        <h2>Add Participants</h2>
+        <p>Enter the names of everyone participating in the Secret Santa exchange</p>
+      </div>
+
+      @if (errorMessage()) {
+        <div class="error-message">
+          <span class="error-icon">⚠️</span>
+          {{ errorMessage() }}
+        </div>
+      }
+
+      <div class="names-list">
+        @for (name of names(); track trackByIndex($index)) {
+          <div class="name-input-group">
+            <input
+              #nameInput
+              type="text"
+              [value]="name"
+              (input)="onNameInput($index, $event)"
+              (keydown)="onKeyDown($index, $event)"
+              placeholder="Enter name"
+              class="name-input"
+              maxlength="50"
+            />
+            @if (names().length > 1) {
+              <button
+                type="button"
+                (click)="removeName($index)"
+                class="remove-btn"
+                aria-label="Remove participant"
+              >
+                ✕
+              </button>
+            }
+          </div>
+        }
+      </div>
+
+      <button
+        type="button"
+        (click)="addName()"
+        class="add-btn"
+      >
+        + Add Another Person
+      </button>
+
+      <button
+        type="button"
+        (click)="generateSecretSanta()"
+        class="generate-btn"
+        [disabled]="isLoading()"
+      >
+        @if (isLoading()) {
+          <span class="spinner"></span>
+          Generating...
+        } @else {
+          🎄 Generate Santa Links
+        }
+      </button>
+    </div>
+
+    <div class="info-section">
+      <h3>How it works</h3>
+      <ol>
+        <li>Add all participants' names</li>
+        <li>Click "Generate Links"</li>
+        <li>Share the unique link with each person via WhatsApp</li>
+        <li>Each person will discover who they're giving a gift to!</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
