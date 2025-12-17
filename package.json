@@ -3,11 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node dist/secret-santa/server/server.mjs",
+    "start:dev": "ng serve",
+    "start:prod": "node dist/secret-santa/server/server.mjs",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "serve:ssr:secret-santa": "node dist/secret-santa/server/server.mjs"
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
