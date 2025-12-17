@@ -19,7 +19,16 @@
     "step1": "Añade los nombres de todos los participantes",
     "step2": "Haz clic en \"Generar Enlaces\"",
     "step3": "Comparte el enlace único con cada persona por WhatsApp",
-    "step4": "¡Cada persona descubrirá a quién le está dando un regalo!"
+    "step4": "¡Cada persona descubrirá a quién le está dando un regalo!",
+    "aboutTitle": "Acerca del Generador de Amigo Invisible",
+    "aboutParagraph1": "Nuestro Generador de Amigo Invisible es la herramienta perfecta para crear intercambios de regalos mágicos durante la temporada navideña. Ya sea que estés organizando un Amigo Invisible para tu familia, amigos o compañeros de trabajo, este generador online gratuito hace que todo el proceso sea simple y divertido.",
+    "aboutParagraph2": "La tradición del Amigo Invisible, también conocida como Amigo Secreto o Intercambio de Regalos Secreto, es una forma popular de celebrar la Navidad y otras fiestas. Los participantes sortean nombres para determinar a quién le darán un regalo, manteniendo la identidad en secreto hasta que ocurra el intercambio de regalos. Nuestro generador automatiza este proceso, asegurando asignaciones justas y aleatorias cada vez.",
+    "aboutParagraph3": "Lo que hace especial a nuestro Generador de Amigo Invisible es su simplicidad y privacidad. No se requieren direcciones de correo electrónico: simplemente añade los nombres de los participantes y genera enlaces únicos. Comparte estos enlaces por WhatsApp, mensaje de texto o cualquier plataforma de mensajería que prefieras. Cada persona recibe su propio enlace personalizado que revela su pareja de Amigo Invisible cuando se abre.",
+    "aboutParagraph4": "Perfecto para fiestas de oficina, reuniones familiares, grupos de amigos o cualquier ocasión en la que quieras organizar un intercambio de regalos. El generador asegura que nadie saque su propio nombre y crea emparejamientos verdaderamente aleatorios. ¡Comienza tu intercambio de regalos mágico hoy y trae alegría a tus celebraciones navideñas!",
+    "aboutParagraph5": "Nuestra plataforma es completamente gratuita, no requiere registro y respeta tu privacidad. Todas las asignaciones se generan localmente en tu navegador, por lo que tus datos permanecen seguros. ¡Crea intercambios de Amigo Invisible ilimitados y difunde el espíritu navideño!",
+    "learnMoreTitle": "Aprende Más Sobre Intercambios de Regalos",
+    "linkSecretSantaWiki": "Amigo Invisible en Wikipedia",
+    "linkGiftExchangeWiki": "Tradiciones de Intercambio de Regalos en Wikipedia"
   },
   "results": {
     "title": "Tus Enlaces de Amigo Invisible",

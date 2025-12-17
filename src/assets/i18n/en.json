@@ -19,7 +19,16 @@
     "step1": "Add all participants' names",
     "step2": "Click \"Generate Links\"",
     "step3": "Share the unique link with each person via WhatsApp",
-    "step4": "Each person will discover who they're giving a gift to!"
+    "step4": "Each person will discover who they're giving a gift to!",
+    "aboutTitle": "About Secret Santa Generator",
+    "aboutParagraph1": "Our Secret Santa Generator is the perfect tool for creating magical gift exchanges during the holiday season. Whether you're organizing a Secret Santa for your family, friends, or colleagues, this free online generator makes the entire process simple and fun.",
+    "aboutParagraph2": "The Secret Santa tradition, also known as Kris Kringle or Secret Gift Exchange, is a popular way to celebrate Christmas and other holidays. Participants draw names to determine who they'll give a gift to, keeping the identity secret until the gift exchange occurs. Our generator automates this process, ensuring fair and random assignments every time.",
+    "aboutParagraph3": "What makes our Secret Santa Generator special is its simplicity and privacy. No email addresses are required - simply add participant names and generate unique links. Share these links via WhatsApp, text message, or any messaging platform you prefer. Each person receives their own personalized link that reveals their Secret Santa match when opened.",
+    "aboutParagraph4": "Perfect for office parties, family gatherings, friend groups, or any occasion where you want to organize a gift exchange. The generator ensures that no one draws their own name and creates truly random pairings. Start your magical gift exchange today and bring joy to your holiday celebrations!",
+    "aboutParagraph5": "Our platform is completely free to use, requires no registration, and respects your privacy. All assignments are generated locally in your browser, so your data stays secure. Create unlimited Secret Santa exchanges and spread the holiday spirit!",
+    "learnMoreTitle": "Learn More About Gift Exchanges",
+    "linkSecretSantaWiki": "Secret Santa on Wikipedia",
+    "linkGiftExchangeWiki": "Gift Exchange Traditions on Wikipedia"
   },
   "results": {
     "title": "Your Secret Santa Links",
