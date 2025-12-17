@@ -182,14 +182,15 @@
   background: #f7fafc;
   border-radius: 16px;
   padding: 1.5rem;
-  margin: 2rem 0;
+  margin: 1rem 0;
   text-align: left;
 }
 
 .message-box p {
+  text-align: center;
   color: #4a5568;
   font-size: 1.1rem;
-  margin: 0.75rem 0;
+  margin: 0.5rem 0;
   line-height: 1.6;
 }
 
@@ -279,7 +280,7 @@
 
   .message-box p {
     font-size: 0.95rem;
-    margin: 0.6rem 0;
+    margin: 0 0;
     line-height: 1.5;
   }
 
