@@ -130,7 +130,7 @@
     "defaultTitle": "Gerador de Amigo Secreto - Crie trocas de presentes mágicas",
     "defaultDescription": "Gere links únicos de Amigo Secreto para seus amigos e família. Nenhum e-mail necessário - compartilhe via WhatsApp! Crie trocas de presentes mágicas neste Natal.",
     "revealTitle": "Revelação de Amigo Secreto de {{participantName}}",
-    "revealDescription": "🎅 {{participantName}}, você está dando um presente para {{assignedTo}} neste Natal! Descubra seu parceiro de Amigo Secreto."
+    "revealDescription": "🎅 {{participantName}}, descubra seu parceiro de Amigo Secreto neste Natal!"
   },
   "language": {
     "switch": "Trocar idioma",

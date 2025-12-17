@@ -130,7 +130,7 @@
     "defaultTitle": "Secret Santa Generator - Create Magical Gift Exchanges",
     "defaultDescription": "Generate unique Secret Santa links for your friends and family. No email needed - share via WhatsApp! Create magical gift exchanges this Christmas.",
     "revealTitle": "{{participantName}}'s Secret Santa Reveal",
-    "revealDescription": "🎅 {{participantName}}, you're giving a gift to {{assignedTo}} this Christmas! Discover your Secret Santa match."
+    "revealDescription": "🎅 {{participantName}}, discover your Secret Santa match this Christmas!"
   },
   "language": {
     "switch": "Switch Language",

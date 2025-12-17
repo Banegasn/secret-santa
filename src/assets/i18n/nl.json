@@ -130,7 +130,7 @@
     "defaultTitle": "Secret Santa Generator - Maak magische cadeau-uitwisselingen",
     "defaultDescription": "Genereer unieke Secret Santa links voor je vrienden en familie. Geen e-mail nodig - deel via WhatsApp! Maak magische cadeau-uitwisselingen deze kerst.",
     "revealTitle": "{{participantName}}'s Secret Santa Onthulling",
-    "revealDescription": "🎅 {{participantName}}, je geeft {{assignedTo}} deze kerst een cadeau! Ontdek je Secret Santa match."
+    "revealDescription": "🎅 {{participantName}}, ontdek je Secret Santa match deze kerst!"
   },
   "language": {
     "switch": "Taal wijzigen",

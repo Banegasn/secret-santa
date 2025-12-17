@@ -130,7 +130,7 @@
     "defaultTitle": "Generador de Amigo Invisible - Crea Intercambios de Regalos Mágicos",
     "defaultDescription": "Genera enlaces únicos de Amigo Invisible para tus amigos y familia. ¡No se necesita correo electrónico - comparte por WhatsApp! Crea intercambios de regalos mágicos esta Navidad.",
     "revealTitle": "Revelación de Amigo Invisible de {{participantName}}",
-    "revealDescription": "🎅 {{participantName}}, ¡le estás dando un regalo a {{assignedTo}} esta Navidad! Descubre tu pareja de Amigo Invisible."
+    "revealDescription": "🎅 {{participantName}}, ¡descubre tu pareja de Amigo Invisible esta Navidad!"
   },
   "language": {
     "switch": "Cambiar Idioma",

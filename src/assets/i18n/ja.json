@@ -130,7 +130,7 @@
     "defaultTitle": "シークレットサンタジェネレーター - 魔法のようなギフト交換を作成",
     "defaultDescription": "友達や家族のためのユニークなシークレットサンタリンクを生成。メール不要 - WhatsApp経由で共有！このクリスマスに魔法のようなギフト交換を作成。",
     "revealTitle": "{{participantName}}のシークレットサンタ明らかに",
-    "revealDescription": "🎅 {{participantName}}、このクリスマスに{{assignedTo}}にギフトを贈ります！シークレットサンタのマッチを発見してください。"
+    "revealDescription": "🎅 {{participantName}}、このクリスマスにシークレットサンタのマッチを発見してください！"
   },
   "language": {
     "switch": "言語を切り替え",

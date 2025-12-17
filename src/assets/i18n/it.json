@@ -130,7 +130,7 @@
     "defaultTitle": "Generatore Secret Santa - Crea scambi di regali magici",
     "defaultDescription": "Genera link Secret Santa unici per i tuoi amici e la tua famiglia. Nessuna email necessaria - condividi tramite WhatsApp! Crea scambi di regali magici questo Natale.",
     "revealTitle": "Rivelazione Secret Santa di {{participantName}}",
-    "revealDescription": "🎅 {{participantName}}, stai facendo un regalo a {{assignedTo}} questo Natale! Scopri il tuo abbinamento Secret Santa."
+    "revealDescription": "🎅 {{participantName}}, scopri il tuo abbinamento Secret Santa questo Natale!"
   },
   "language": {
     "switch": "Cambia lingua",
