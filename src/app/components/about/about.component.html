@@ -1,0 +1,42 @@
+<div class="about-container">
+  <div class="content-wrapper">
+    <div class="header">
+      <div class="icon">🎅</div>
+      <h1>{{ 'about.title' | translate }}</h1>
+      <p class="subtitle">{{ 'about.subtitle' | translate }}</p>
+    </div>
+
+    <div class="content-section">
+      <section class="about-section">
+        <p>{{ 'about.paragraph1' | translate }}</p>
+        <p>{{ 'about.paragraph2' | translate }}</p>
+        <p>{{ 'about.paragraph3' | translate }}</p>
+        <p>{{ 'about.paragraph4' | translate }}</p>
+        <p>{{ 'about.paragraph5' | translate }}</p>
+      </section>
+
+      <section class="learn-more-section">
+        <h2>{{ 'about.learnMoreTitle' | translate }}</h2>
+        <ul class="external-links">
+          <li>
+            <a href="https://en.wikipedia.org/wiki/Secret_Santa" target="_blank" rel="noopener noreferrer">
+              {{ 'about.linkSecretSantaWiki' | translate }}
+            </a>
+          </li>
+          <li>
+            <a href="https://en.wikipedia.org/wiki/Gift_exchange" target="_blank" rel="noopener noreferrer">
+              {{ 'about.linkGiftExchangeWiki' | translate }}
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <div class="actions-section">
+        <a [routerLink]="['/']" class="home-button">
+          {{ 'about.createExchange' | translate }}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+

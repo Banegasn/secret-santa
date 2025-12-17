@@ -1,6 +1,6 @@
 import { Component, viewChildren, effect, signal, ElementRef, afterRender, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { SecretSantaService } from '../../services/secret-santa.service';
 import { SEOService } from '../../services/seo.service';
@@ -10,7 +10,7 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [FormsModule, CommonModule, TranslatePipe],
+  imports: [FormsModule, CommonModule, TranslatePipe, RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
       const namesLength = this.names().length;
       const shouldFocusNew = this.shouldFocusNew();
       const indexToFocus = this.focusIndex();
-      
+
       if (inputElements.length > 0) {
         if (shouldFocusNew && inputElements.length === namesLength) {
           // Focus the last input when creating a new participant
@@ -94,12 +94,16 @@ export class HomeComponent implements OnInit {
       }
 
       const participants = this.#secretSantaService.assignSecretSantas(validNames);
-      
+
       // Store in sessionStorage for results page (only on browser)
       if (isPlatformBrowser(this.#platformId)) {
-        sessionStorage.setItem('secretSantaParticipants', JSON.stringify(participants));
+        const dataToStore = {
+          participants,
+          customMessage: ''
+        };
+        sessionStorage.setItem('secretSantaParticipants', JSON.stringify(dataToStore));
       }
-      
+
       // Navigate to results page
       this.#router.navigate(['/results']);
     } catch (error) {
@@ -127,10 +131,10 @@ export class HomeComponent implements OnInit {
         updated[index] = input.value;
         return updated;
       });
-      
+
       const namesLength = this.names().length;
       const isLastInput = index === namesLength - 1;
-      
+
       if (isLastInput) {
         // If it's the last input, create a new participant
         this.addName();

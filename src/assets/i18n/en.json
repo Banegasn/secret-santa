@@ -11,6 +11,9 @@
     "enterName": "Enter name",
     "removeParticipant": "Remove participant",
     "addAnotherPerson": "+ Add Another Person",
+    "customMessage": "Custom Message (Optional)",
+    "customMessagePlaceholder": "Example: The gift budget is $25. Enjoy shopping!",
+    "customMessageHint": "This message will be included when sharing links via WhatsApp. You can use {{url}} to indicate where the link will appear.",
     "generating": "Generating...",
     "generateSantaLinks": "🎄 Generate Santa Links",
     "errorAtLeast2": "Please add at least 2 participants",
@@ -28,7 +31,9 @@
     "aboutParagraph5": "Our platform is completely free to use, requires no registration, and respects your privacy. All assignments are generated locally in your browser, so your data stays secure. Create unlimited Secret Santa exchanges and spread the holiday spirit!",
     "learnMoreTitle": "Learn More About Gift Exchanges",
     "linkSecretSantaWiki": "Secret Santa on Wikipedia",
-    "linkGiftExchangeWiki": "Gift Exchange Traditions on Wikipedia"
+    "linkGiftExchangeWiki": "Gift Exchange Traditions on Wikipedia",
+    "learnHowItWorks": "Learn How It Works",
+    "readMoreAbout": "Read More About Us"
   },
   "results": {
     "title": "Your Secret Santa Links",
@@ -82,6 +87,45 @@
       "fashion": "fashion accessories gifts"
     }
   },
+  "howItWorks": {
+    "title": "How It Works",
+    "subtitle": "Learn how to use our Secret Santa Generator to create magical gift exchanges",
+    "seoTitle": "How It Works - Secret Santa Generator Guide",
+    "seoDescription": "Learn how to use our Secret Santa Generator step by step. Create gift exchanges easily, share links via WhatsApp, and organize perfect Secret Santa events.",
+    "step1Title": "Step 1: Add Participants",
+    "step1Description": "Start by adding the names of everyone who will participate in your Secret Santa exchange. You can add as many participants as you need.",
+    "step1Point1": "Click the \"Add Another Person\" button to add more participants",
+    "step1Point2": "Enter each person's name in the input field",
+    "step1Point3": "Remove participants if needed by clicking the ✕ button",
+    "step2Title": "Step 2: Generate Links",
+    "step2Description": "Once you've added all participants, click the \"Generate Santa Links\" button. Our algorithm will randomly assign each person to someone else, ensuring no one gets their own name.",
+    "step2Point1": "The generator creates unique, secure links for each participant",
+    "step2Point2": "Each link contains encrypted information about who that person should give a gift to",
+    "step3Title": "Step 3: Share the Links",
+    "step3Description": "After generating the links, you'll see a list of personalized links for each participant. Share each link with the corresponding person.",
+    "step3Point1": "Use the WhatsApp button to instantly share via WhatsApp",
+    "step3Point2": "Or copy the link and share it through any messaging platform",
+    "step3Point3": "Each person receives only their own link - privacy is guaranteed",
+    "step4Title": "Step 4: Reveal the Match",
+    "step4Description": "When a participant opens their link, they'll discover who they're giving a gift to. The reveal page shows their Secret Santa match in a fun, festive way.",
+    "step4Point1": "Each link can only be opened once to maintain the surprise",
+    "step4Point2": "Participants can see gift suggestions based on their match's name",
+    "featuresTitle": "Key Features",
+    "feature1Title": "Privacy & Security",
+    "feature1Description": "No email addresses required. All assignments are generated locally in your browser, keeping your data secure and private.",
+    "feature2Title": "Easy Sharing",
+    "feature2Description": "Share links instantly via WhatsApp or any messaging platform. No complicated setup or registration needed.",
+    "feature3Title": "Fair Randomization",
+    "feature3Description": "Our algorithm ensures truly random assignments. No one will ever draw their own name, and each assignment is completely fair.",
+    "feature4Title": "Completely Free",
+    "feature4Description": "Use our Secret Santa Generator as many times as you want, completely free. No hidden fees, no registration required.",
+    "tipsTitle": "Tips for a Great Secret Santa",
+    "tip1": "Set a budget limit so everyone knows how much to spend",
+    "tip2": "Set a deadline for when gifts should be exchanged",
+    "tip3": "Consider adding gift preferences or wish lists if participants want to share them",
+    "tip4": "Have fun! Secret Santa is all about spreading joy and holiday cheer",
+    "createExchangeButton": "Create Your Secret Santa Exchange"
+  },
   "seo": {
     "defaultTitle": "Secret Santa Generator - Create Magical Gift Exchanges",
     "defaultDescription": "Generate unique Secret Santa links for your friends and family. No email needed - share via WhatsApp! Create magical gift exchanges this Christmas.",
@@ -92,5 +136,24 @@
     "switch": "Switch Language",
     "english": "English",
     "spanish": "Español"
+  },
+  "footer": {
+    "about": "About",
+    "howItWorks": "How It Works"
+  },
+  "about": {
+    "title": "About Secret Santa Generator",
+    "subtitle": "Learn more about our free Secret Santa Generator",
+    "seoTitle": "About - Secret Santa Generator",
+    "seoDescription": "Learn about our Secret Santa Generator - a free, privacy-focused tool for creating magical gift exchanges. No email required, share via WhatsApp!",
+    "paragraph1": "Our Secret Santa Generator is the perfect tool for creating magical gift exchanges during the holiday season. Whether you're organizing a Secret Santa for your family, friends, or colleagues, this free online generator makes the entire process simple and fun.",
+    "paragraph2": "The Secret Santa tradition, also known as Kris Kringle or Secret Gift Exchange, is a popular way to celebrate Christmas and other holidays. Participants draw names to determine who they'll give a gift to, keeping the identity secret until the gift exchange occurs. Our generator automates this process, ensuring fair and random assignments every time.",
+    "paragraph3": "What makes our Secret Santa Generator special is its simplicity and privacy. No email addresses are required - simply add participant names and generate unique links. Share these links via WhatsApp, text message, or any messaging platform you prefer. Each person receives their own personalized link that reveals their Secret Santa match when opened.",
+    "paragraph4": "Perfect for office parties, family gatherings, friend groups, or any occasion where you want to organize a gift exchange. The generator ensures that no one draws their own name and creates truly random pairings. Start your magical gift exchange today and bring joy to your holiday celebrations!",
+    "paragraph5": "Our platform is completely free to use, requires no registration, and respects your privacy. All assignments are generated locally in your browser, so your data stays secure. Create unlimited Secret Santa exchanges and spread the holiday spirit!",
+    "learnMoreTitle": "Learn More About Gift Exchanges",
+    "linkSecretSantaWiki": "Secret Santa on Wikipedia",
+    "linkGiftExchangeWiki": "Gift Exchange Traditions on Wikipedia",
+    "createExchange": "Create Your Secret Santa Exchange"
   }
 }

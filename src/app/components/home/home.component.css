@@ -22,6 +22,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -40,9 +41,12 @@
 }
 
 @keyframes bounce {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-10px);
   }
@@ -297,6 +301,56 @@
   opacity: 0.7;
 }
 
+.about-link {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.about-button {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: white;
+  color: #667eea;
+  text-decoration: none;
+  border: 2px solid #667eea;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s;
+}
+
+.about-button:hover {
+  background: #667eea;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.how-it-works-link {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.how-it-works-button {
+  display: inline-block;
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.how-it-works-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
 @media (max-width: 640px) {
   .home-container {
     padding: 1rem 0.75rem;
@@ -366,14 +420,16 @@
   .name-input {
     font-size: 1rem;
     padding: 0.75rem 0.875rem;
-    min-height: 44px; /* Better touch target */
+    min-height: 44px;
+    /* Better touch target */
   }
 
   .remove-btn {
     width: 40px;
     height: 40px;
     font-size: 1.1rem;
-    min-width: 40px; /* Better touch target */
+    min-width: 40px;
+    /* Better touch target */
   }
 
   .add-btn {
@@ -428,6 +484,27 @@
   .external-links {
     font-size: 0.9rem;
   }
+
+  .about-link {
+    margin-top: 1.25rem;
+  }
+
+  .about-button {
+    width: 100%;
+    padding: 0.875rem;
+    font-size: 0.9rem;
+  }
+
+  .how-it-works-link {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+  }
+
+  .how-it-works-button {
+    width: 100%;
+    padding: 0.875rem;
+    font-size: 0.95rem;
+  }
 }
 
 /* Extra small devices */
@@ -449,4 +526,3 @@
     font-size: 2rem;
   }
 }
-

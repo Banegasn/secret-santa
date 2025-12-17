@@ -1,5 +1,6 @@
 import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SecretSantaService, Participant } from '../../services/secret-santa.service';
 import { TranslationService } from '../../services/translation.service';
@@ -8,7 +9,7 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
 @Component({
   selector: 'app-results',
   standalone: true,
-  imports: [CommonModule, TranslatePipe],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './results.component.html',
   styleUrl: './results.component.css'
 })
@@ -20,6 +21,7 @@ export class ResultsComponent implements OnInit {
   #baseUrl: string = '';
 
   participants: Participant[] = [];
+  customMessage: string = '';
 
   ngOnInit(): void {
     if (!isPlatformBrowser(this.#platformId)) {
@@ -34,7 +36,15 @@ export class ResultsComponent implements OnInit {
       return;
     }
 
-    this.participants = JSON.parse(stored);
+    const data = JSON.parse(stored);
+    // Support both old format (array) and new format (object with participants and customMessage)
+    if (Array.isArray(data)) {
+      this.participants = data;
+      this.customMessage = '';
+    } else {
+      this.participants = data.participants || [];
+      this.customMessage = data.customMessage || '';
+    }
     this.#baseUrl = window.location.origin;
   }
 
@@ -64,10 +74,45 @@ export class ResultsComponent implements OnInit {
     if (!isPlatformBrowser(this.#platformId)) {
       return;
     }
-    const messageText = this.#translationService.translate('results.whatsappMessage', { url });
+
+    let messageText: string;
+
+    // Use custom message if provided, otherwise use default message
+    if (this.customMessage && this.customMessage.trim()) {
+      // Replace {{url}} placeholder in custom message if present, otherwise append URL
+      messageText = this.customMessage.includes('{{url}}')
+        ? this.customMessage.replace('{{url}}', url)
+        : `${this.customMessage}\n\n${url}`;
+    } else {
+      messageText = this.#translationService.translate('results.whatsappMessage', { url });
+    }
+
     const message = encodeURIComponent(messageText);
     const whatsappUrl = `https://wa.me/?text=${message}`;
     window.open(whatsappUrl, '_blank');
+  }
+
+  onCustomMessageChange(): void {
+    if (!isPlatformBrowser(this.#platformId)) {
+      return;
+    }
+
+    // Update sessionStorage with the new custom message
+    const stored = sessionStorage.getItem('secretSantaParticipants');
+    if (stored) {
+      const data = JSON.parse(stored);
+      if (Array.isArray(data)) {
+        // Convert old format to new format
+        sessionStorage.setItem('secretSantaParticipants', JSON.stringify({
+          participants: data,
+          customMessage: this.customMessage
+        }));
+      } else {
+        // Update existing object
+        data.customMessage = this.customMessage;
+        sessionStorage.setItem('secretSantaParticipants', JSON.stringify(data));
+      }
+    }
   }
 
   startOver(): void {

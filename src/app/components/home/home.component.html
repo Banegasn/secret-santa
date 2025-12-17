@@ -79,23 +79,18 @@
       <h2>{{ 'home.aboutTitle' | translate }}</h2>
       <p>{{ 'home.aboutParagraph1' | translate }}</p>
       <p>{{ 'home.aboutParagraph2' | translate }}</p>
-      <p>{{ 'home.aboutParagraph3' | translate }}</p>
-      <p>{{ 'home.aboutParagraph4' | translate }}</p>
-      <p>{{ 'home.aboutParagraph5' | translate }}</p>
 
-      <h3>{{ 'home.learnMoreTitle' | translate }}</h3>
-      <ul class="external-links">
-        <li>
-          <a href="https://en.wikipedia.org/wiki/Secret_Santa" target="_blank" rel="noopener noreferrer">
-            {{ 'home.linkSecretSantaWiki' | translate }}
-          </a>
-        </li>
-        <li>
-          <a href="https://en.wikipedia.org/wiki/Gift_exchange" target="_blank" rel="noopener noreferrer">
-            {{ 'home.linkGiftExchangeWiki' | translate }}
-          </a>
-        </li>
-      </ul>
+      <div class="about-link">
+        <a [routerLink]="['/about']" class="about-button">
+          {{ 'home.readMoreAbout' | translate }} →
+        </a>
+      </div>
+
+      <div class="how-it-works-link">
+        <a [routerLink]="['/how-it-works']" class="how-it-works-button">
+          {{ 'home.learnHowItWorks' | translate }} →
+        </a>
+      </div>
     </div>
   </div>
 </div>

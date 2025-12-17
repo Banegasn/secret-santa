@@ -1,21 +1,42 @@
 <div class="language-switcher">
   <button
     type="button"
-    [class.active]="currentLanguage === 'en'"
-    (click)="switchLanguage('en')"
-    class="lang-btn"
-    [attr.aria-label]="'language.english' | translate"
-  >
-    EN
+    (click)="toggleDropdown()"
+    class="language-selector-btn"
+    [attr.aria-label]="'language.switch' | translate"
+    [attr.aria-expanded]="isOpen()">
+    <span class="language-display">
+      @if (getCurrentLanguageOption().flag) {
+        <span class="flag">{{ getCurrentLanguageOption().flag }}</span>
+      }
+      <span class="language-name">{{ getCurrentLanguageOption().nativeName }}</span>
+    </span>
+    <span class="dropdown-icon" [class.open]="isOpen()">▼</span>
   </button>
-  <button
-    type="button"
-    [class.active]="currentLanguage === 'es'"
-    (click)="switchLanguage('es')"
-    class="lang-btn"
-    [attr.aria-label]="'language.spanish' | translate"
-  >
-    ES
-  </button>
-</div>
 
+  @if (isOpen()) {
+    <div class="language-dropdown">
+      @for (lang of languages; track lang.code) {
+        <button
+          type="button"
+          (click)="switchLanguage(lang.code)"
+          class="language-option"
+          [class.active]="currentLanguage() === lang.code"
+          [attr.aria-label]="lang.name">
+          @if (lang.flag) {
+            <span class="flag">{{ lang.flag }}</span>
+          }
+          <span class="option-content">
+            <span class="native-name">{{ lang.nativeName }}</span>
+            @if (lang.name !== lang.nativeName) {
+              <span class="english-name">{{ lang.name }}</span>
+            }
+          </span>
+          @if (currentLanguage() === lang.code) {
+            <span class="checkmark">✓</span>
+          }
+        </button>
+      }
+    </div>
+  }
+</div>

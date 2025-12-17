@@ -198,6 +198,43 @@
   border-color: #cbd5e0;
 }
 
+.custom-message-section {
+  margin-bottom: 1.5rem;
+}
+
+.custom-message-label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+}
+
+.custom-message-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: all 0.2s;
+  line-height: 1.5;
+}
+
+.custom-message-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.custom-message-hint {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #718096;
+  margin-bottom: 0;
+}
+
 .info-section {
   background: #fff5e6;
   padding: 1.5rem;
@@ -300,6 +337,24 @@
     font-size: 0.95rem;
     padding: 0.75rem;
     min-height: 44px;
+  }
+
+  .custom-message-section {
+    margin-bottom: 1.25rem;
+  }
+
+  .custom-message-label {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .custom-message-input {
+    font-size: 0.95rem;
+    padding: 0.75rem 0.875rem;
+  }
+
+  .custom-message-hint {
+    font-size: 0.85rem;
   }
 
   .info-section {
