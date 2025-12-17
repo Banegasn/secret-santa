@@ -19,14 +19,13 @@ export class AboutComponent implements OnInit {
 
   ngOnInit(): void {
     // Set SEO for about page
-    const url = typeof window !== 'undefined' ? window.location.href : 'https://secret-santa.banegasn.dev/about';
+    // URL will be determined by SEO service to match current subdomain
     const title = this.#translationService.translate('about.seoTitle');
     const description = this.#translationService.translate('about.seoDescription');
 
     this.#seoService.updateSEO({
       title,
-      description,
-      url
+      description
     });
   }
 

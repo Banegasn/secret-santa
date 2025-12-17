@@ -18,15 +18,12 @@ export class HowItWorksComponent implements OnInit {
   readonly #translationService = inject(TranslationService);
 
   ngOnInit(): void {
-    // Set SEO for how-it-works page
-    const url = typeof window !== 'undefined' ? window.location.href : 'https://secret-santa.banegasn.dev/how-it-works';
     const title = this.#translationService.translate('howItWorks.seoTitle');
     const description = this.#translationService.translate('howItWorks.seoDescription');
 
     this.#seoService.updateSEO({
       title,
-      description,
-      url
+      description
     });
   }
 

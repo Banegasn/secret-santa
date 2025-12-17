@@ -1,6 +1,6 @@
-import { Injectable, inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, inject, PLATFORM_ID, REQUEST } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { isPlatformBrowser } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { TranslationService } from './translation.service';
 
 export interface SEOData {
@@ -19,6 +19,8 @@ export class SEOService {
   readonly #meta = inject(Meta);
   readonly #translationService = inject(TranslationService);
   readonly #platformId = inject(PLATFORM_ID);
+  readonly #document = inject(DOCUMENT);
+  readonly #request = inject(REQUEST, { optional: true });
 
   private readonly fallbackBaseUrl = 'https://secret-santa.banegasn.dev';
 
@@ -34,7 +36,36 @@ export class SEOService {
     if (isPlatformBrowser(this.#platformId) && typeof window !== 'undefined') {
       return window.location.origin;
     }
+
+    // During SSR, try to get URL from REQUEST
+    if (isPlatformServer(this.#platformId) && this.#request) {
+      const protocol = (this.#request as any).protocol || 'https';
+      const host = (this.#request as any).headers?.host || '';
+      if (host) {
+        return `${protocol}://${host}`;
+      }
+    }
+
     return this.fallbackBaseUrl;
+  }
+
+  private getCurrentUrl(): string {
+    if (isPlatformBrowser(this.#platformId) && typeof window !== 'undefined') {
+      return window.location.href;
+    }
+
+    // During SSR, construct URL from REQUEST
+    if (isPlatformServer(this.#platformId) && this.#request) {
+      const req = this.#request as any;
+      const protocol = req.protocol || 'https';
+      const host = req.headers?.host || '';
+      const originalUrl = req.originalUrl || req.url || '/';
+      if (host) {
+        return `${protocol}://${host}${originalUrl}`;
+      }
+    }
+
+    return this.getBaseUrl();
   }
 
   private getDefaultImage(): string {
@@ -46,7 +77,7 @@ export class SEOService {
     const title = data.title || this.getDefaultTitle();
     const description = data.description || this.getDefaultDescription();
     const image = data.image || this.getDefaultImage();
-    const url = data.url || (isPlatformBrowser(this.#platformId) && typeof window !== 'undefined' ? window.location.href : this.getBaseUrl());
+    const url = (data.url && data.url.trim()) ? data.url : this.getCurrentUrl();
     const type = data.type || 'website';
 
     // Update locale based on current language
@@ -99,21 +130,17 @@ export class SEOService {
   }
 
   private updateCanonicalUrl(url: string): void {
-    if (!isPlatformBrowser(this.#platformId)) {
-      return; // Skip on server side
-    }
-
     // Remove existing canonical link if any
-    const existingCanonical = document.querySelector('link[rel="canonical"]');
+    const existingCanonical = this.#document.querySelector('link[rel="canonical"]');
     if (existingCanonical) {
       existingCanonical.remove();
     }
 
     // Add new canonical link
-    const link = document.createElement('link');
+    const link = this.#document.createElement('link');
     link.setAttribute('rel', 'canonical');
     link.setAttribute('href', url);
-    document.head.appendChild(link);
+    this.#document.head.appendChild(link);
   }
 
   addStructuredData(data: {
@@ -128,7 +155,7 @@ export class SEOService {
       return;
     }
 
-    const existingScript = document.querySelector('script[type="application/ld+json"]');
+    const existingScript = this.#document.querySelector('script[type="application/ld+json"]');
     if (existingScript) {
       existingScript.remove();
     }
@@ -143,14 +170,14 @@ export class SEOService {
       ...rest
     };
 
-    const script = document.createElement('script');
+    const script = this.#document.createElement('script');
     script.type = 'application/ld+json';
     script.text = JSON.stringify(structuredData);
-    document.head.appendChild(script);
+    this.#document.head.appendChild(script);
   }
 
   setHomePageSEO(): void {
-    const url = isPlatformBrowser(this.#platformId) && typeof window !== 'undefined' ? window.location.href : this.getBaseUrl();
+    const url = this.getCurrentUrl();
     const title = this.getDefaultTitle();
     const description = this.getDefaultDescription();
 

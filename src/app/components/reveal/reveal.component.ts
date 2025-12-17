@@ -50,13 +50,12 @@ export class RevealComponent implements OnInit {
     this.isValid = true;
     this.isLoading = false;
 
-    // Set SEO for reveal page with dynamic content
-    const currentUrl = isPlatformBrowser(this.#platformId) && typeof window !== 'undefined' ? window.location.href : '';
-    
+    const currentUrl = isPlatformBrowser(this.#platformId) && typeof window !== 'undefined' ? window.location.href : undefined;
+
     this.#seoService.setRevealPageSEO(
       this.participantName,
       this.assignedTo,
-      currentUrl
+      currentUrl || ''
     );
   }
 
