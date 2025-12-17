@@ -4,7 +4,8 @@ import express from 'express';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import bootstrap from './main.server';
-import { config, SSR_HL_PARAM } from './app/app.config.server';
+import { config } from './app/app.config.server';
+import { SSR_HL_PARAM } from './app/tokens/ssr-hl-param.token';
 import { REQUEST } from '@angular/core';
 
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
@@ -31,10 +32,19 @@ app.use(express.static(browserDistFolder, {
 app.get('**', (req, res, next) => {
   const { protocol, headers, originalUrl, query } = req;
 
-  // Extract hl query parameter from the request
-  let hlParam: string | undefined = query['hl'] as string | undefined;
+  const host = headers.host || '';
+  const subdomain = host.split('.')[0];
 
-  // If not in query object, parse manually from URL
+  let hlParam: string | undefined;
+
+  if (subdomain === 'amigo-invisible') {
+    hlParam = 'es';
+  }
+
+  if (!hlParam) {
+    hlParam = query['hl'] as string | undefined;
+  }
+
   if (!hlParam && originalUrl && originalUrl.includes('?')) {
     try {
       const queryString = originalUrl.split('?')[1];
@@ -46,7 +56,6 @@ app.get('**', (req, res, next) => {
   }
 
   if (!hlParam) {
-    // use accept-language header to determine the language
     const acceptLanguage = headers['accept-language'] || '';
     const languages = acceptLanguage.split(',');
     hlParam = languages[0]?.split('-')[0] || 'en';
@@ -54,22 +63,12 @@ app.get('**', (req, res, next) => {
 
   console.log(`[SSR SERVER] Extracted hl param: ${hlParam} from URL: ${originalUrl}`);
 
-  // Build providers array - SSR_HL_PARAM MUST come BEFORE config.providers
-  // This ensures it's available when provideAppInitializer tries to inject it
   const allProviders: any[] = [
     { provide: REQUEST, useValue: req },
     { provide: APP_BASE_HREF, useValue: req.baseUrl || '/' },
-    // SSR_HL_PARAM must be provided here, before config.providers
     { provide: SSR_HL_PARAM, useValue: hlParam },
-    // Now add config.providers (which includes provideAppInitializer that needs SSR_HL_PARAM)
     ...(config.providers || [])
   ];
-
-  // Verify SSR_HL_PARAM provider is present
-  const hasSSRHLParam = allProviders.some(p =>
-    p && typeof p === 'object' && 'provide' in p && p.provide === SSR_HL_PARAM
-  );
-  console.log(`[SSR SERVER] Total providers: ${allProviders.length}, SSR_HL_PARAM present: ${hasSSRHLParam}, value: ${hlParam}`);
 
   commonEngine
     .render({

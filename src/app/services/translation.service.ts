@@ -1,5 +1,6 @@
 import { Injectable, signal, computed, effect, inject, makeStateKey, TransferState, PLATFORM_ID } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { SSR_HL_PARAM } from '../tokens/ssr-hl-param.token';
 
 export type Language = 'en' | 'es' | 'fr' | 'de' | 'it' | 'pt' | 'ja' | 'nl' | 'pl';
 
@@ -22,6 +23,7 @@ export class TranslationService {
     en: {}, es: {}, fr: {}, de: {}, it: {}, pt: {}, ja: {}, nl: {}, pl: {}
   });
   readonly #platformId = inject(PLATFORM_ID);
+  readonly #hlParam = inject(SSR_HL_PARAM, { optional: true }) ?? undefined;
 
   readonly #currentLanguage = signal<Language>('en');
 
@@ -32,6 +34,8 @@ export class TranslationService {
   public t = computed(() => this.#translations()[this.#currentLanguage()]);
 
   constructor() {
+    this.initializeLanguage();
+
     // Load translations from TransferState if available (SSR -> Client transfer)
     if (this.#transferState.hasKey(TRANSLATIONS_STATE)) {
       const transferredTranslations = this.#transferState.get(TRANSLATIONS_STATE, {} as Record<Language, Translations>);
@@ -47,8 +51,6 @@ export class TranslationService {
       console.log(`[Client] Loaded translations from TransferState for languages:`, Object.keys(transferredTranslations));
     }
 
-    this.initializeLanguage();
-
     // Update HTML lang attribute when language changes
     effect(() => {
       const lang = this.#currentLanguage();
@@ -59,12 +61,13 @@ export class TranslationService {
   }
 
   private initializeLanguage(): void {
+    // Browser-specific initialization  
     if (isPlatformBrowser(this.#platformId) && window.location) {
       const urlParams = new URLSearchParams(window.location.search);
       const hlParam = urlParams.get('hl');
 
       if (hlParam && VALID_LANGUAGES.includes(hlParam as Language)) {
-        this.#currentLanguage.set(hlParam as Language);
+        this.setLanguage(hlParam as Language);
         if (window.localStorage) {
           localStorage.setItem('preferredLanguage', hlParam);
         }
@@ -76,17 +79,8 @@ export class TranslationService {
     if (isPlatformBrowser(this.#platformId) && window.localStorage) {
       const preferredLanguage = localStorage.getItem('preferredLanguage');
       if (preferredLanguage && VALID_LANGUAGES.includes(preferredLanguage as Language)) {
-        this.#currentLanguage.set(preferredLanguage as Language);
+        this.setLanguage(preferredLanguage as Language);
         console.log(`[Client] Language set from localStorage: ${preferredLanguage}`);
-        return;
-      }
-    }
-
-    if (this.#transferState.hasKey(INITIAL_LANGUAGE)) {
-      const transferredLang = this.#transferState.get(INITIAL_LANGUAGE, 'en');
-      if (transferredLang && VALID_LANGUAGES.includes(transferredLang)) {
-        this.#currentLanguage.set(transferredLang);
-        console.log(`[Client] Language set from TransferState: ${transferredLang}`);
         return;
       }
     }
@@ -95,14 +89,20 @@ export class TranslationService {
       const navigatorLanguage = navigator.language;
       const language = navigatorLanguage.split('-')[0] as Language;
       if (language && VALID_LANGUAGES.includes(language)) {
-        this.#currentLanguage.set(language);
+        this.setLanguage(language);
         console.log(`[Client] Language set from navigator.language: ${language}`);
         return;
       }
     }
 
-    this.#currentLanguage.set('en');
-    console.log(`[Client] Language defaulted to 'en' (no TransferState available)`);
+    if (isPlatformServer(this.#platformId) && this.#hlParam) {
+      this.setLanguage(this.#hlParam as Language);
+      console.log(`[Server] Language set from hlParam: ${this.#hlParam}`);
+      return;
+    }
+
+    this.setLanguage('en');
+    console.log(`[${isPlatformBrowser(this.#platformId) ? 'Client' : 'Server'}] Language set to default: en`);
   }
 
   setLanguage(lang: Language): void {
@@ -113,7 +113,7 @@ export class TranslationService {
       this.#document.documentElement.lang = lang;
     }
 
-    if (typeof window !== 'undefined' && window.localStorage) {
+    if (isPlatformBrowser(this.#platformId) && window.localStorage) {
       localStorage.setItem('preferredLanguage', lang);
     }
   }

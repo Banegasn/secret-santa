@@ -1,13 +1,10 @@
-import { mergeApplicationConfig, ApplicationConfig, InjectionToken, inject, Optional, TransferState, provideAppInitializer, REQUEST } from '@angular/core';
+import { ApplicationConfig, inject, mergeApplicationConfig, provideAppInitializer, TransferState } from '@angular/core';
 import { provideServerRendering } from '@angular/platform-server';
-import { appConfig } from './app.config';
-import { TranslationService, Language, INITIAL_LANGUAGE, TRANSLATIONS_STATE, Translations } from './services/translation.service';
 import { readFileSync } from 'fs';
-import { join, dirname } from 'path';
+import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
-
-// Token for injecting hl query parameter
-export const SSR_HL_PARAM = new InjectionToken<string | undefined>('SSR_HL_PARAM');
+import { appConfig } from './app.config';
+import { Language, Translations, TRANSLATIONS_STATE, TranslationService } from './services/translation.service';
 
 // ES module equivalent of __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -16,23 +13,9 @@ const __dirname = dirname(__filename);
 // Factory function to preload translations on server
 function preloadTranslationsFactory(
   translationService: TranslationService,
-  transferState: TransferState,
-  hlParam?: string | undefined
+  transferState: TransferState
 ): () => void {
   return () => {
-    console.log(`[SSR] preloadTranslationsFactory called, hlParam: ${hlParam}, type: ${typeof hlParam}`);
-
-    // Determine initial language: use hlParam if provided, otherwise default to 'en'
-    const validLanguages: Language[] = ['en', 'es', 'fr', 'de', 'it', 'pt', 'ja', 'nl', 'pl'];
-    const currentLang: Language | null = (hlParam && validLanguages.includes(hlParam as Language)) ? (hlParam as Language) : null;
-
-    // Set language in service
-    if (currentLang) {
-      translationService.setLanguage(currentLang);
-      transferState.set(INITIAL_LANGUAGE, currentLang);
-      console.log(`[SSR] ✓ Initial language set to TransferState: ${currentLang}`);
-    }
-
     try {
       // Try multiple possible paths for the assets
       const possiblePaths = [
@@ -117,14 +100,7 @@ const serverConfig: ApplicationConfig = {
     provideAppInitializer(() => {
       const translationService = inject(TranslationService);
       const transferState = inject(TransferState);
-      const request = inject(REQUEST);
-
-      console.log(`[SSR] Request:`, request?.url, request?.body);
-
-      const hlParam = inject(SSR_HL_PARAM, { optional: true }) ?? undefined;
-      console.log(`[SSR] Injected SSR_HL_PARAM: ${hlParam}`);
-
-      const initializer = preloadTranslationsFactory(translationService, transferState, hlParam);
+      const initializer = preloadTranslationsFactory(translationService, transferState);
       return initializer();
     })
   ]
