@@ -19,17 +19,22 @@ const commonEngine = new CommonEngine();
 /**
  * Serve static files from /browser
  * This should only handle actual static file requests (assets, etc.)
+ * The fallthrough: false option ensures that if a file doesn't exist,
+ * it doesn't send a 404, allowing the request to continue to the Angular router
  */
 app.use(express.static(browserDistFolder, {
   maxAge: '1y',
-  index: false // Don't serve index.html, Angular handles routing
+  index: false, // Don't serve index.html, Angular handles routing
+  fallthrough: true // Allow requests to continue if file not found
 }));
 
 /**
- * Handle all requests by rendering the Angular application first.
- * Static files will be served by Angular's router or fallback.
+ * Handle all requests by rendering the Angular application.
+ * This catch-all route handles all HTTP methods and all paths.
+ * Static files will be served by the middleware above if they exist,
+ * otherwise Angular router will handle the route.
  */
-app.get('**', (req, res, next) => {
+app.all('*', (req, res, next) => {
   const { protocol, headers, originalUrl, query } = req;
 
   const host = headers.host || '';
