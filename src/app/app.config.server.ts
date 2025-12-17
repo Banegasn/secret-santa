@@ -121,7 +121,6 @@ const serverConfig: ApplicationConfig = {
 
       console.log(`[SSR] Request:`, request?.url, request?.body);
 
-      // Inject SSR_HL_PARAM - use optional injection with fallback
       const hlParam = inject(SSR_HL_PARAM, { optional: true }) ?? undefined;
       console.log(`[SSR] Injected SSR_HL_PARAM: ${hlParam}`);
 

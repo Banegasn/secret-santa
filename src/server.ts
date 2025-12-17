@@ -45,6 +45,13 @@ app.get('**', (req, res, next) => {
     }
   }
 
+  if (!hlParam) {
+    // use accept-language header to determine the language
+    const acceptLanguage = headers['accept-language'] || '';
+    const languages = acceptLanguage.split(',');
+    hlParam = languages[0]?.split('-')[0] || 'en';
+  }
+
   console.log(`[SSR SERVER] Extracted hl param: ${hlParam} from URL: ${originalUrl}`);
 
   // Build providers array - SSR_HL_PARAM MUST come BEFORE config.providers

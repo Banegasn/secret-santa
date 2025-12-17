@@ -1,11 +1,11 @@
 {
   "app": {
     "title": "Secret Santa Generator",
-    "subtitle": "Create magical gift exchanges for your friends and family"
+    "subtitle": "Create magical gift exchanges for your friends and family, no email needed - share via WhatsApp!"
   },
   "home": {
     "title": "Secret Santa Generator",
-    "subtitle": "Create magical gift exchanges for your friends and family",
+    "subtitle": "Create magical gift exchanges for your friends and family, no email needed - share via WhatsApp!",
     "addParticipants": "Add Participants",
     "addParticipantsDesc": "Enter the names of everyone participating in the Secret Santa exchange",
     "enterName": "Enter name",

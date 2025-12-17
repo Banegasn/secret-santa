@@ -21,6 +21,7 @@ export class TranslationLoaderService {
    */
   async loadInitialLanguage(): Promise<void> {
     const currentLang = this.translationService.getCurrentLanguage();
+    console.log(`[TranslationLoader] Loading initial language: ${currentLang}`);
     await this.loadLanguage(currentLang);
   }
 

@@ -1,5 +1,5 @@
 import { Injectable, signal, computed, effect, inject, makeStateKey, TransferState, PLATFORM_ID } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 
 export type Language = 'en' | 'es' | 'fr' | 'de' | 'it' | 'pt' | 'ja' | 'nl' | 'pl';
 
@@ -22,6 +22,7 @@ export class TranslationService {
     en: {}, es: {}, fr: {}, de: {}, it: {}, pt: {}, ja: {}, nl: {}, pl: {}
   });
   readonly #platformId = inject(PLATFORM_ID);
+
   readonly #currentLanguage = signal<Language>('en');
 
   // Public readonly signal for current language (allows components to track changes)
@@ -64,7 +65,6 @@ export class TranslationService {
 
       if (hlParam && VALID_LANGUAGES.includes(hlParam as Language)) {
         this.#currentLanguage.set(hlParam as Language);
-        // Save to localStorage for future visits
         if (window.localStorage) {
           localStorage.setItem('preferredLanguage', hlParam);
         }
