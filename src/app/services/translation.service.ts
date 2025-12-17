@@ -68,9 +68,6 @@ export class TranslationService {
 
       if (hlParam && VALID_LANGUAGES.includes(hlParam as Language)) {
         this.setLanguage(hlParam as Language);
-        if (window.localStorage) {
-          localStorage.setItem('preferredLanguage', hlParam);
-        }
         console.log(`[Client] Language set from hl query param: ${hlParam}`);
         return;
       }
@@ -83,6 +80,12 @@ export class TranslationService {
         console.log(`[Client] Language set from localStorage: ${preferredLanguage}`);
         return;
       }
+    }
+
+    if (isPlatformBrowser(this.#platformId) && window.location.hostname.includes('amigo-invisible')) {
+      this.setLanguage('es');
+      console.log(`[Client] Language set from subdomain: es`);
+      return;
     }
 
     if (isPlatformBrowser(this.#platformId)) {

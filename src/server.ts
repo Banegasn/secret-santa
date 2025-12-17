@@ -62,6 +62,10 @@ app.get('**', (req, res, next) => {
     hlParam = languages[0]?.split('-')[0] || 'en';
   }
 
+  if (!hlParam) {
+    hlParam = 'en';
+  }
+
   console.log(`[SSR SERVER] Extracted hl param: ${hlParam} from URL: ${originalUrl}`);
 
   const providers: any[] = [
