@@ -3,35 +3,34 @@
     @if (isLoading) {
       <div class="loading-state">
         <div class="spinner-large"></div>
-        <p>Loading your Secret Santa match...</p>
+        <p>{{ 'reveal.loading' | translate }}</p>
       </div>
     } @else if (errorMessage) {
       <div class="error-state">
         <div class="error-icon">❌</div>
-        <h1>Oops!</h1>
+        <h1>{{ 'reveal.oops' | translate }}</h1>
         <p>{{ errorMessage }}</p>
         <button
           type="button"
           (click)="createNewExchange()"
-          class="create-btn"
-        >
-          Create New Exchange
+          class="create-btn">
+          {{ 'reveal.createNewExchange' | translate }}
         </button>
       </div>
     } @else {
       <div class="reveal-content">
         <div class="celebration-icon">🎁</div>
-        <h1>Your Secret Santa</h1>
-        <p class="greeting">Hey <strong>{{ participantName }}</strong>!</p>
-        
+        <h1>{{ 'reveal.yourSecretSanta' | translate }}</h1>
+        <p class="greeting">{{ 'reveal.hey' | translate }} <strong>{{ participantName }}</strong>!</p>
+
         <div class="reveal-box">
-          <div class="reveal-label">You're giving a gift to:</div>
+          <div class="reveal-label">{{ 'reveal.givingGiftTo' | translate }}</div>
           <div class="reveal-name">{{ assignedTo }}</div>
         </div>
 
         <div class="message-box">
-          <p>🎄 Time to start thinking about the perfect gift!</p>
-          <p>Happy holidays and have fun shopping! 🎅</p>
+          <p>{{ 'reveal.timeToThink' | translate }}</p>
+          <p>{{ 'reveal.happyHolidays' | translate }}</p>
         </div>
 
         @if (assignedTo) {
@@ -41,12 +40,10 @@
         <button
           type="button"
           (click)="createNewExchange()"
-          class="create-btn"
-        >
-          Create Your Own Exchange
+          class="create-btn">
+          {{ 'reveal.createYourOwn' | translate }}
         </button>
       </div>
     }
   </div>
 </div>
-

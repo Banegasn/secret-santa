@@ -1,0 +1,87 @@
+{
+  "app": {
+    "title": "Secret Santa Generator",
+    "subtitle": "Create magical gift exchanges for your friends and family"
+  },
+  "home": {
+    "title": "Secret Santa Generator",
+    "subtitle": "Create magical gift exchanges for your friends and family",
+    "addParticipants": "Add Participants",
+    "addParticipantsDesc": "Enter the names of everyone participating in the Secret Santa exchange",
+    "enterName": "Enter name",
+    "removeParticipant": "Remove participant",
+    "addAnotherPerson": "+ Add Another Person",
+    "generating": "Generating...",
+    "generateSantaLinks": "🎄 Generate Santa Links",
+    "errorAtLeast2": "Please add at least 2 participants",
+    "errorOccurred": "An error occurred",
+    "howItWorks": "How it works",
+    "step1": "Add all participants' names",
+    "step2": "Click \"Generate Links\"",
+    "step3": "Share the unique link with each person via WhatsApp",
+    "step4": "Each person will discover who they're giving a gift to!"
+  },
+  "results": {
+    "title": "Your Secret Santa Links",
+    "subtitle": "Share each link with the corresponding person via WhatsApp",
+    "for": "For:",
+    "copyLink": "Copy link",
+    "shareOnWhatsApp": "Share on WhatsApp",
+    "startOver": "Start Over",
+    "tip": "💡 Tip: Click the WhatsApp button to instantly share each link with the corresponding person. They'll discover their Secret Santa match when they open the link!",
+    "whatsappMessage": "Your Secret Santa link is ready! Click here to find out who you're giving a gift to: {{url}}"
+  },
+  "reveal": {
+    "loading": "Loading your Secret Santa match...",
+    "oops": "Oops!",
+    "createNewExchange": "Create New Exchange",
+    "yourSecretSanta": "Your Secret Santa",
+    "hey": "Hey",
+    "givingGiftTo": "You're giving a gift to:",
+    "timeToThink": "🎄 Time to start thinking about the perfect gift!",
+    "happyHolidays": "Happy holidays and have fun shopping! 🎅",
+    "createYourOwn": "Create Your Own Exchange",
+    "invalidLink": "Invalid link. Please check your Secret Santa link.",
+    "invalidCorrupted": "Invalid or corrupted link. Please contact the organizer."
+  },
+  "giftSuggestions": {
+    "title": "🎁 Gift Ideas for {{name}}",
+    "subtitle": "Find the perfect gift on Amazon",
+    "affiliateDisclosure": "As an Amazon Associate, we earn from qualifying purchases.",
+    "categories": {
+      "under25": "Under $25",
+      "under50": "Under $50",
+      "tech": "Tech Gifts",
+      "books": "Books",
+      "homeDecor": "Home Decor",
+      "gourmetFood": "Gourmet Food",
+      "beauty": "Beauty & Skincare",
+      "sports": "Sports & Fitness",
+      "gaming": "Gaming",
+      "fashion": "Fashion"
+    },
+    "searchTerms": {
+      "under25": "christmas gifts under 25 dollars",
+      "under50": "christmas gifts under 50 dollars",
+      "tech": "tech gifts christmas",
+      "books": "bestselling books",
+      "homeDecor": "home decor gifts christmas",
+      "gourmetFood": "gourmet food gift baskets",
+      "beauty": "beauty gift sets christmas",
+      "sports": "fitness gifts christmas",
+      "gaming": "gaming accessories gifts",
+      "fashion": "fashion accessories gifts"
+    }
+  },
+  "seo": {
+    "defaultTitle": "Secret Santa Generator - Create Magical Gift Exchanges",
+    "defaultDescription": "Generate unique Secret Santa links for your friends and family. No email needed - share via WhatsApp! Create magical gift exchanges this Christmas.",
+    "revealTitle": "{{participantName}}'s Secret Santa Reveal",
+    "revealDescription": "🎅 {{participantName}}, you're giving a gift to {{assignedTo}} this Christmas! Discover your Secret Santa match."
+  },
+  "language": {
+    "switch": "Switch Language",
+    "english": "English",
+    "spanish": "Español"
+  }
+}

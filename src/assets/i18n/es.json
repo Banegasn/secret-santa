@@ -1,0 +1,87 @@
+{
+  "app": {
+    "title": "Generador de Amigo Invisible",
+    "subtitle": "Crea intercambios de regalos mágicos para tus amigos y familia, sin necesidad de correo electrónico"
+  },
+  "home": {
+    "title": "Amigo Invisible",
+    "subtitle": "Crea intercambios de regalos mágicos para tus amigos y familia, sin necesidad de correo electrónico",
+    "addParticipants": "Añadir Participantes",
+    "addParticipantsDesc": "Ingresa los nombres de todos los que participarán en el intercambio de Amigo Invisible",
+    "enterName": "Ingresa un nombre",
+    "removeParticipant": "Eliminar participante",
+    "addAnotherPerson": "+ Añadir Otra Persona",
+    "generating": "Generando...",
+    "generateSantaLinks": "🎄 Generar Enlaces",
+    "errorAtLeast2": "Por favor añade al menos 2 participantes",
+    "errorOccurred": "Ocurrió un error",
+    "howItWorks": "Cómo funciona",
+    "step1": "Añade los nombres de todos los participantes",
+    "step2": "Haz clic en \"Generar Enlaces\"",
+    "step3": "Comparte el enlace único con cada persona por WhatsApp",
+    "step4": "¡Cada persona descubrirá a quién le está dando un regalo!"
+  },
+  "results": {
+    "title": "Tus Enlaces de Amigo Invisible",
+    "subtitle": "Comparte cada enlace con la persona correspondiente por WhatsApp",
+    "for": "Para:",
+    "copyLink": "Copiar enlace",
+    "shareOnWhatsApp": "Compartir en WhatsApp",
+    "startOver": "Empezar de Nuevo",
+    "tip": "💡 Consejo: Haz clic en el botón de WhatsApp para compartir instantáneamente cada enlace con la persona correspondiente. ¡Descubrirán su pareja de Amigo Invisible cuando abran el enlace!",
+    "whatsappMessage": "¡Tu enlace de Amigo Invisible está listo! Haz clic aquí para descubrir a quién le estás dando un regalo: {{url}}"
+  },
+  "reveal": {
+    "loading": "Cargando tu pareja de Amigo Invisible...",
+    "oops": "¡Ups!",
+    "createNewExchange": "Crear Nuevo Intercambio",
+    "yourSecretSanta": "Tu Amigo Invisible",
+    "hey": "Hola",
+    "givingGiftTo": "Este año te toca regalarle un regalo a:",
+    "timeToThink": "🎄 ¡Es hora de pensar en el regalo perfecto!",
+    "happyHolidays": "¡Felices fiestas y que disfrutes comprando! 🎅",
+    "createYourOwn": "Crear Tu Propio Intercambio",
+    "invalidLink": "Enlace inválido. Por favor verifica tu enlace de Amigo Invisible.",
+    "invalidCorrupted": "Enlace inválido o corrupto. Por favor contacta al organizador."
+  },
+  "giftSuggestions": {
+    "title": "🎁 Ideas de Regalos para {{name}}",
+    "subtitle": "Encuentra el regalo perfecto en Amazon",
+    "affiliateDisclosure": "Como Asociado de Amazon, ganamos con las compras que califiquen.",
+    "categories": {
+      "under25": "Menos de 25€",
+      "under50": "Menos de 50€",
+      "tech": "Regalos Tecnológicos",
+      "books": "Libros",
+      "homeDecor": "Decoración del Hogar",
+      "gourmetFood": "Comida Gourmet",
+      "beauty": "Belleza y Cuidado de la Piel",
+      "sports": "Deportes y Fitness",
+      "gaming": "Videojuegos",
+      "fashion": "Moda"
+    },
+    "searchTerms": {
+      "under25": "regalos navidad menos 25 euros",
+      "under50": "regalos navidad menos 50 euros",
+      "tech": "regalos tecnología navidad",
+      "books": "libros más vendidos",
+      "homeDecor": "decoración hogar regalos navidad",
+      "gourmetFood": "cestas regalo comida gourmet",
+      "beauty": "sets belleza regalos navidad",
+      "sports": "regalos fitness navidad",
+      "gaming": "accesorios gaming regalos",
+      "fashion": "accesorios moda regalos"
+    }
+  },
+  "seo": {
+    "defaultTitle": "Generador de Amigo Invisible - Crea Intercambios de Regalos Mágicos",
+    "defaultDescription": "Genera enlaces únicos de Amigo Invisible para tus amigos y familia. ¡No se necesita correo electrónico - comparte por WhatsApp! Crea intercambios de regalos mágicos esta Navidad.",
+    "revealTitle": "Revelación de Amigo Invisible de {{participantName}}",
+    "revealDescription": "🎅 {{participantName}}, ¡le estás dando un regalo a {{assignedTo}} esta Navidad! Descubre tu pareja de Amigo Invisible."
+  },
+  "language": {
+    "switch": "Cambiar Idioma",
+    "english": "English",
+    "spanish": "Español"
+  }
+}

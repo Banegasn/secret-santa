@@ -1,7 +1,7 @@
 <div class="gift-suggestions">
   <div class="gift-header">
-    <h3>🎁 Gift Ideas for {{ assignedToName }}</h3>
-    <p class="gift-subtitle">Find the perfect gift on Amazon</p>
+    <h3>{{ getGiftTitle() }}</h3>
+    <p class="gift-subtitle">{{ 'giftSuggestions.subtitle' | translate }}</p>
   </div>
 
   <div class="gift-grid">
@@ -19,7 +19,7 @@
   </div>
 
   <p class="affiliate-disclosure">
-    As an Amazon Associate, we earn from qualifying purchases.
+    {{ 'giftSuggestions.affiliateDisclosure' | translate }}
   </p>
 </div>
 

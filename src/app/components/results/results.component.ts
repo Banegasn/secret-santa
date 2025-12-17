@@ -1,45 +1,45 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { SecretSantaService, Participant } from '../../services/secret-santa.service';
+import { TranslationService } from '../../services/translation.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-results',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './results.component.html',
   styleUrl: './results.component.css'
 })
 export class ResultsComponent implements OnInit {
-  participants: Participant[] = [];
-  baseUrl: string = '';
+  readonly #secretSantaService = inject(SecretSantaService);
+  readonly #router = inject(Router);
+  readonly #translationService = inject(TranslationService);
+  readonly #platformId = inject(PLATFORM_ID);
+  #baseUrl: string = '';
 
-  constructor(
-    private secretSantaService: SecretSantaService,
-    private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  participants: Participant[] = [];
 
   ngOnInit(): void {
-    // Get participants from sessionStorage (only on browser)
-    if (!isPlatformBrowser(this.platformId)) {
-      // On server side, redirect to home
-      this.router.navigate(['/']);
+    if (!isPlatformBrowser(this.#platformId)) {
+      this.#router.navigate(['/']);
       return;
     }
 
     const stored = sessionStorage.getItem('secretSantaParticipants');
+
     if (!stored) {
-      this.router.navigate(['/']);
+      this.#router.navigate(['/']);
       return;
     }
 
     this.participants = JSON.parse(stored);
-    this.baseUrl = window.location.origin;
+    this.#baseUrl = window.location.origin;
   }
 
   getUrl(token: string): string {
-    return this.secretSantaService.generateUrl(token, this.baseUrl);
+    return this.#secretSantaService.generateUrl(token, this.#baseUrl);
   }
 
   copyToClipboard(url: string, name: string, event?: Event): void {
@@ -61,19 +61,20 @@ export class ResultsComponent implements OnInit {
   }
 
   shareToWhatsApp(url: string, name: string): void {
-    if (!isPlatformBrowser(this.platformId)) {
+    if (!isPlatformBrowser(this.#platformId)) {
       return;
     }
-    const message = encodeURIComponent(`Your Secret Santa link is ready! Click here to find out who you're giving a gift to: ${url}`);
+    const messageText = this.#translationService.translate('results.whatsappMessage', { url });
+    const message = encodeURIComponent(messageText);
     const whatsappUrl = `https://wa.me/?text=${message}`;
     window.open(whatsappUrl, '_blank');
   }
 
   startOver(): void {
-    if (isPlatformBrowser(this.platformId)) {
+    if (isPlatformBrowser(this.#platformId)) {
       sessionStorage.removeItem('secretSantaParticipants');
     }
-    this.router.navigate(['/']);
+    this.#router.navigate(['/']);
   }
 }
 

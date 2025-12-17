@@ -1,18 +1,26 @@
-import { Component, viewChildren, effect, signal, ElementRef, afterRender, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, viewChildren, effect, signal, ElementRef, afterRender, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { SecretSantaService } from '../../services/secret-santa.service';
 import { SEOService } from '../../services/seo.service';
+import { TranslationService } from '../../services/translation.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, TranslatePipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
+  readonly #secretSantaService = inject(SecretSantaService);
+  readonly #router = inject(Router);
+  readonly #seoService = inject(SEOService);
+  readonly #translationService = inject(TranslationService);
+  readonly #platformId = inject(PLATFORM_ID);
+
   inputs = viewChildren<ElementRef<HTMLInputElement>>('nameInput');
   names = signal<string[]>(['']);
   errorMessage = signal('');
@@ -20,12 +28,7 @@ export class HomeComponent implements OnInit {
   private shouldFocusNew = signal(false);
   private focusIndex = signal<number | null>(null);
 
-  constructor(
-    private secretSantaService: SecretSantaService,
-    private router: Router,
-    private seoService: SEOService,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {
+  constructor() {
     // Watch for changes to focus inputs
     effect(() => {
       const inputElements = this.inputs();
@@ -55,7 +58,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     // Set SEO for home page
-    this.seoService.setHomePageSEO();
+    this.#seoService.setHomePageSEO();
   }
 
   addName(): void {
@@ -85,22 +88,22 @@ export class HomeComponent implements OnInit {
         .filter(name => name.length > 0);
 
       if (validNames.length < 2) {
-        this.errorMessage.set('Please add at least 2 participants');
+        this.errorMessage.set(this.#translationService.translate('home.errorAtLeast2'));
         this.isLoading.set(false);
         return;
       }
 
-      const participants = this.secretSantaService.assignSecretSantas(validNames);
+      const participants = this.#secretSantaService.assignSecretSantas(validNames);
       
       // Store in sessionStorage for results page (only on browser)
-      if (isPlatformBrowser(this.platformId)) {
+      if (isPlatformBrowser(this.#platformId)) {
         sessionStorage.setItem('secretSantaParticipants', JSON.stringify(participants));
       }
       
       // Navigate to results page
-      this.router.navigate(['/results']);
+      this.#router.navigate(['/results']);
     } catch (error) {
-      this.errorMessage.set(error instanceof Error ? error.message : 'An error occurred');
+      this.errorMessage.set(error instanceof Error ? error.message : this.#translationService.translate('home.errorOccurred'));
       this.isLoading.set(false);
     }
   }

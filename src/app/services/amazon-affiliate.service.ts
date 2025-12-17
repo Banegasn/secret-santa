@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { TranslationService } from './translation.service';
 
 export interface GiftIdea {
   label: string;
@@ -8,8 +9,8 @@ export interface GiftIdea {
 }
 
 interface GiftCategory {
-  label: string;
-  searchTermTemplate: string; // Template that may include {year} placeholder
+  labelKey: string; // Translation key for the label
+  searchTermKey: string; // Translation key for the search term
   emoji: string;
   interestKey?: string; // Key used for interest matching
   isBudget?: boolean; // Flag for budget categories
@@ -19,78 +20,148 @@ interface GiftCategory {
   providedIn: 'root'
 })
 export class AmazonAffiliateService {
-  // IMPORTANT: Your affiliate ID ends in -20, which is a US Amazon Associates ID.
-  // If you want to support other marketplaces (e.g., Amazon.es for Spain),
-  // you MUST set up OneLink in your Amazon Associates account backend.
-  // OneLink automatically redirects users to their local Amazon marketplace
-  // while preserving your affiliate tracking.
-  // Without OneLink, using a US tag on non-US marketplaces may not attribute sales correctly.
-  private readonly associateId = 'secretsantaba-20';
-  
+  readonly #translationService = inject(TranslationService);
+  // Map of marketplace domains to their corresponding affiliate IDs
+  // Each marketplace requires its own Amazon Associates account
+  private readonly affiliateIds: Record<string, string> = {
+    'com': 'secretsantaba-20',    // US
+    'es': 'secretsanta09-21',     // Spain
+    // Add more marketplace-specific IDs as needed
+    // 'co.uk': 'your-uk-id',
+    // 'fr': 'your-fr-id',
+    // etc.
+  };
+
+  // Default affiliate ID (US) - used as fallback
+  private readonly defaultAssociateId = 'secretsantaba-20';
+
+  // Map of locale codes to Amazon marketplace domains
+  private readonly marketplaceMap: Record<string, string> = {
+    'es': 'es',      // Spain
+    'en': 'com',     // US (default)
+    'en-us': 'com',  // US
+    'en-gb': 'co.uk', // UK
+    'fr': 'fr',      // France
+    'de': 'de',      // Germany
+    'it': 'it',      // Italy
+    'pt': 'es',      // Portugal (using Spain marketplace)
+    'nl': 'nl',      // Netherlands
+    'pl': 'pl',      // Poland
+    'ca': 'ca',      // Canada
+    'au': 'com.au',  // Australia
+    'jp': 'co.jp',   // Japan
+    'mx': 'com.mx',  // Mexico
+    'br': 'com.br',  // Brazil
+    'in': 'in',      // India
+  };
+
   // Centralized source of truth for all gift categories
   // To add a new category, just add it here - no need to update multiple places!
+  // Labels and search terms are translated using TranslationService
   private readonly giftCategories: GiftCategory[] = [
-    { 
-      label: 'Under $25', 
-      searchTermTemplate: 'christmas gifts under 25 dollars', 
+    {
+      labelKey: 'giftSuggestions.categories.under25',
+      searchTermKey: 'giftSuggestions.searchTerms.under25',
       emoji: '🎁',
       isBudget: true
     },
-    { 
-      label: 'Under $50', 
-      searchTermTemplate: 'christmas gifts under 50 dollars', 
+    {
+      labelKey: 'giftSuggestions.categories.under50',
+      searchTermKey: 'giftSuggestions.searchTerms.under50',
       emoji: '🎄',
       isBudget: true
     },
-    { 
-      label: 'Tech Gifts', 
-      searchTermTemplate: 'tech gifts christmas', 
+    {
+      labelKey: 'giftSuggestions.categories.tech',
+      searchTermKey: 'giftSuggestions.searchTerms.tech',
       emoji: '📱',
       interestKey: 'tech'
     },
-    { 
-      label: 'Books', 
-      searchTermTemplate: 'bestselling books', 
+    {
+      labelKey: 'giftSuggestions.categories.books',
+      searchTermKey: 'giftSuggestions.searchTerms.books',
       emoji: '📚',
       interestKey: 'reading'
     },
-    { 
-      label: 'Home Decor', 
-      searchTermTemplate: 'home decor gifts christmas', 
+    {
+      labelKey: 'giftSuggestions.categories.homeDecor',
+      searchTermKey: 'giftSuggestions.searchTerms.homeDecor',
       emoji: '🏠',
       interestKey: 'home'
     },
-    { 
-      label: 'Gourmet Food', 
-      searchTermTemplate: 'gourmet food gift baskets', 
+    {
+      labelKey: 'giftSuggestions.categories.gourmetFood',
+      searchTermKey: 'giftSuggestions.searchTerms.gourmetFood',
       emoji: '🍫',
       interestKey: 'cooking'
     },
-    { 
-      label: 'Beauty & Skincare', 
-      searchTermTemplate: 'beauty gift sets christmas', 
+    {
+      labelKey: 'giftSuggestions.categories.beauty',
+      searchTermKey: 'giftSuggestions.searchTerms.beauty',
       emoji: '💄',
       interestKey: 'beauty'
     },
-    { 
-      label: 'Sports & Fitness', 
-      searchTermTemplate: 'fitness gifts christmas', 
+    {
+      labelKey: 'giftSuggestions.categories.sports',
+      searchTermKey: 'giftSuggestions.searchTerms.sports',
       emoji: '⚽',
       interestKey: 'fitness'
     },
-    { 
-      label: 'Gaming', 
-      searchTermTemplate: 'gaming accessories gifts', 
+    {
+      labelKey: 'giftSuggestions.categories.gaming',
+      searchTermKey: 'giftSuggestions.searchTerms.gaming',
       emoji: '🎮',
       interestKey: 'gaming'
     },
-    { 
-      label: 'Fashion', 
-      searchTermTemplate: 'fashion accessories gifts', 
+    {
+      labelKey: 'giftSuggestions.categories.fashion',
+      searchTermKey: 'giftSuggestions.searchTerms.fashion',
       emoji: '👔',
       interestKey: 'fashion'
     }
   ];
+
+  /**
+   * Detect user's locale and return corresponding Amazon marketplace
+   * Uses the translation service's current language, falling back to browser language
+   * Falls back to 'com' (US) if locale is not mapped
+   */
+  private detectMarketplace(): string {
+    // First, try to use the translation service's current language
+    const currentLang = this.#translationService.getCurrentLanguage();
+    if (currentLang && this.marketplaceMap[currentLang]) {
+      return this.marketplaceMap[currentLang];
+    }
+
+    // Fall back to browser language detection
+    if (typeof navigator === 'undefined' || !navigator.language) {
+      return 'com'; // Default to US
+    }
+
+    const browserLang = navigator.language.toLowerCase();
+
+    // Check for exact match first
+    if (this.marketplaceMap[browserLang]) {
+      return this.marketplaceMap[browserLang];
+    }
+
+    // Check for language code match (e.g., 'es' from 'es-ES')
+    const langCode = browserLang.split('-')[0];
+    if (this.marketplaceMap[langCode]) {
+      return this.marketplaceMap[langCode];
+    }
+
+    // Default to US marketplace
+    return 'com';
+  }
+
+  /**
+   * Get the affiliate ID for a specific marketplace
+   * Falls back to default (US) affiliate ID if marketplace-specific ID is not configured
+   */
+  private getAffiliateId(marketplace: string): string {
+    return this.affiliateIds[marketplace] || this.defaultAssociateId;
+  }
 
   /**
    * Get current year for dynamic search terms
@@ -102,51 +173,51 @@ export class AmazonAffiliateService {
   }
 
   /**
-   * Process search term template, replacing placeholders if needed
+   * Translate a category label or search term
    */
-  private processSearchTerm(template: string): string {
-    // For now, we use generic terms without year to avoid stale dates
-    // If you want to add year to specific searches, uncomment below:
-    // return template.replace('{year}', this.getCurrentYear().toString());
-    return template;
+  private translate(key: string): string {
+    return this.#translationService.translate(key);
   }
 
   /**
    * Generate Amazon search URL with affiliate tag
    * 
-   * IMPORTANT LOCALIZATION NOTE:
-   * Your affiliate ID (secretsantaba-20) is US-specific.
-   * If you change marketplace to 'es' (Spain) or other locales:
-   * 1. You MUST set up OneLink in your Amazon Associates account
-   * 2. OneLink will automatically redirect users to their local marketplace
-   * 3. Without OneLink, sales may not be attributed correctly
+   * Automatically uses the correct affiliate ID for each marketplace.
+   * Each marketplace requires its own Amazon Associates account.
    * 
    * @param searchTerm The search query
-   * @param marketplace Amazon marketplace (default: 'com' for US)
-   * @returns Amazon search URL with affiliate tag
+   * @param marketplace Amazon marketplace (default: auto-detected from browser locale)
+   * @returns Amazon search URL with marketplace-specific affiliate tag
    */
-  generateAmazonSearchUrl(searchTerm: string, marketplace: string = 'com'): string {
-    const baseUrl = marketplace === 'com' 
+  generateAmazonSearchUrl(searchTerm: string, marketplace?: string): string {
+    // Auto-detect marketplace if not provided
+    const detectedMarketplace = marketplace || this.detectMarketplace();
+
+    // Get the correct affiliate ID for this marketplace
+    const affiliateId = this.getAffiliateId(detectedMarketplace);
+
+    const baseUrl = detectedMarketplace === 'com'
       ? 'https://www.amazon.com/s'
-      : `https://www.amazon.${marketplace}/s`;
-    
+      : `https://www.amazon.${detectedMarketplace}/s`;
+
     const params = new URLSearchParams({
       k: searchTerm,
-      tag: this.associateId,
+      tag: affiliateId,
       ref: 'sr_pg_1'
     });
-    
+
     return `${baseUrl}?${params.toString()}`;
   }
 
   /**
    * Get budget-friendly gift ideas
    * Uses centralized giftCategories as source of truth
+   * Labels and search terms are translated based on current language
    */
   getGiftIdeas(): GiftIdea[] {
     return this.giftCategories.map(category => ({
-      label: category.label,
-      searchTerm: this.processSearchTerm(category.searchTermTemplate),
+      label: this.translate(category.labelKey),
+      searchTerm: this.translate(category.searchTermKey),
       emoji: category.emoji,
       interestKey: category.interestKey
     }));
@@ -155,6 +226,7 @@ export class AmazonAffiliateService {
   /**
    * Get personalized gift suggestions based on interests
    * Uses centralized giftCategories for matching
+   * Labels and search terms are translated based on current language
    */
   getPersonalizedSuggestions(interests?: string[]): GiftIdea[] {
     if (!interests || interests.length === 0) {
@@ -163,42 +235,42 @@ export class AmazonAffiliateService {
         .filter(cat => !cat.isBudget)
         .slice(0, 6)
         .map(category => ({
-          label: category.label,
-          searchTerm: this.processSearchTerm(category.searchTermTemplate),
+          label: this.translate(category.labelKey),
+          searchTerm: this.translate(category.searchTermKey),
           emoji: category.emoji,
           interestKey: category.interestKey
         }));
     }
-    
+
     const suggestions: GiftIdea[] = [];
-    
+
     // Match interests to categories using interestKey
     interests.forEach(interest => {
       const category = this.giftCategories.find(
         cat => cat.interestKey?.toLowerCase() === interest.toLowerCase()
       );
-      
+
       if (category) {
         suggestions.push({
-          label: category.label,
-          searchTerm: this.processSearchTerm(category.searchTermTemplate),
+          label: this.translate(category.labelKey),
+          searchTerm: this.translate(category.searchTermKey),
           emoji: category.emoji,
           interestKey: category.interestKey
         });
       }
     });
-    
+
     // Always add budget options at the end
     const budgetCategories = this.giftCategories.filter(cat => cat.isBudget);
     budgetCategories.forEach(category => {
       suggestions.push({
-        label: category.label,
-        searchTerm: this.processSearchTerm(category.searchTermTemplate),
+        label: this.translate(category.labelKey),
+        searchTerm: this.translate(category.searchTermKey),
         emoji: category.emoji,
         interestKey: category.interestKey
       });
     });
-    
+
     return suggestions.length > 0 ? suggestions : this.getGiftIdeas().slice(0, 6);
   }
 

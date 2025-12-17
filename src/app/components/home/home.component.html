@@ -2,14 +2,14 @@
   <div class="content-wrapper">
     <div class="header">
       <div class="santa-icon">🎅</div>
-      <h1>Secret Santa Generator</h1>
-      <p class="subtitle">Create magical gift exchanges for your friends and family</p>
+      <h1>{{ 'home.title' | translate }}</h1>
+      <p class="subtitle">{{ 'home.subtitle' | translate }}</p>
     </div>
 
     <div class="form-container">
       <div class="form-header">
-        <h2>Add Participants</h2>
-        <p>Enter the names of everyone participating in the Secret Santa exchange</p>
+        <h2>{{ 'home.addParticipants' | translate }}</h2>
+        <p>{{ 'home.addParticipantsDesc' | translate }}</p>
       </div>
 
       @if (errorMessage()) {
@@ -28,17 +28,15 @@
               [value]="name"
               (input)="onNameInput($index, $event)"
               (keydown)="onKeyDown($index, $event)"
-              placeholder="Enter name"
+              [placeholder]="'home.enterName' | translate"
               class="name-input"
-              maxlength="50"
-            />
+              maxlength="50" />
             @if (names().length > 1) {
               <button
                 type="button"
                 (click)="removeName($index)"
                 class="remove-btn"
-                aria-label="Remove participant"
-              >
+                [attr.aria-label]="'home.removeParticipant' | translate">
                 ✕
               </button>
             }
@@ -49,35 +47,32 @@
       <button
         type="button"
         (click)="addName()"
-        class="add-btn"
-      >
-        + Add Another Person
+        class="add-btn">
+        {{ 'home.addAnotherPerson' | translate }}
       </button>
 
       <button
         type="button"
         (click)="generateSecretSanta()"
         class="generate-btn"
-        [disabled]="isLoading()"
-      >
+        [disabled]="isLoading()">
         @if (isLoading()) {
           <span class="spinner"></span>
-          Generating...
+          {{ 'home.generating' | translate }}
         } @else {
-          🎄 Generate Santa Links
+          {{ 'home.generateSantaLinks' | translate }}
         }
       </button>
     </div>
 
     <div class="info-section">
-      <h3>How it works</h3>
+      <h3>{{ 'home.howItWorks' | translate }}</h3>
       <ol>
-        <li>Add all participants' names</li>
-        <li>Click "Generate Links"</li>
-        <li>Share the unique link with each person via WhatsApp</li>
-        <li>Each person will discover who they're giving a gift to!</li>
+        <li>{{ 'home.step1' | translate }}</li>
+        <li>{{ 'home.step2' | translate }}</li>
+        <li>{{ 'home.step3' | translate }}</li>
+        <li>{{ 'home.step4' | translate }}</li>
       </ol>
     </div>
   </div>
 </div>
-
