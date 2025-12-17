@@ -1,9 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 import { SEOService } from '../../services/seo.service';
 import { TranslationService } from '../../services/translation.service';
-import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-how-it-works',

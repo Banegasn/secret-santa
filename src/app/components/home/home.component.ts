@@ -1,11 +1,11 @@
-import { Component, viewChildren, effect, signal, ElementRef, afterRender, OnInit, inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, effect, ElementRef, inject, OnInit, PLATFORM_ID, signal, viewChildren } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 import { SecretSantaService } from '../../services/secret-santa.service';
 import { SEOService } from '../../services/seo.service';
 import { TranslationService } from '../../services/translation.service';
-import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-home',

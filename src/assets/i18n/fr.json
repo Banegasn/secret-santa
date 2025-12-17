@@ -127,8 +127,8 @@
     "createExchangeButton": "Créer votre échange Secret Santa"
   },
   "seo": {
-    "defaultTitle": "Générateur Secret Santa - Créez des échanges de cadeaux magiques",
-    "defaultDescription": "Générez des liens Secret Santa uniques pour vos amis et votre famille. Pas besoin d'e-mail - partagez via WhatsApp ! Créez des échanges de cadeaux magiques ce Noël.",
+    "defaultTitle": "Générateur Secret Santa - Échanges de cadeaux magiques",
+    "defaultDescription": "Générez des liens Secret Santa uniques. Pas d'e-mail - partagez via WhatsApp! Créez des échanges de cadeaux magiques ce Noël.",
     "revealTitle": "Révélation Secret Santa de {{participantName}}",
     "revealDescription": "🎅 {{participantName}}, découvrez votre partenaire Secret Santa ce Noël !"
   },

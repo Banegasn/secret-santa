@@ -1,8 +1,8 @@
-import { Component, computed, inject, signal, effect, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslationService, Language } from '../../services/translation.service';
-import { TranslationLoaderService } from '../../services/translation-loader.service';
+import { Component, computed, effect, ElementRef, HostListener, inject, signal } from '@angular/core';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { TranslationLoaderService } from '../../services/translation-loader.service';
+import { Language, TranslationService } from '../../services/translation.service';
 
 export interface LanguageOption {
   code: Language;

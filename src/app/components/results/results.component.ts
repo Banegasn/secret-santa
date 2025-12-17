@@ -1,10 +1,10 @@
-import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SecretSantaService, Participant } from '../../services/secret-santa.service';
-import { TranslationService } from '../../services/translation.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { Participant, SecretSantaService } from '../../services/secret-santa.service';
+import { TranslationService } from '../../services/translation.service';
 
 @Component({
   selector: 'app-results',

@@ -17,11 +17,11 @@ export class TranslatePipe implements PipeTransform {
     // Read the signal to make this pipe reactive to language changes
     // When the language changes, the signal updates and Angular will re-evaluate this pipe
     this.translationService.t();
-    
+
     if (typeof params === 'string') {
       return this.translationService.translate(key, { value: params });
     }
-    
+
     return this.translationService.translate(key, params);
   }
 }

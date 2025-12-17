@@ -1,10 +1,10 @@
-import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 import { SecretSantaService } from '../../services/secret-santa.service';
 import { SEOService } from '../../services/seo.service';
 import { TranslationService } from '../../services/translation.service';
-import { TranslatePipe } from '../../pipes/translate.pipe';
 import { GiftSuggestionsComponent } from '../gift-suggestions/gift-suggestions.component';
 
 @Component({

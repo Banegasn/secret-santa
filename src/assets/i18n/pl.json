@@ -128,7 +128,7 @@
   },
   "seo": {
     "defaultTitle": "Generator Secret Santa - Twórz magiczne wymiany prezentów",
-    "defaultDescription": "Generuj unikalne linki Secret Santa dla swoich przyjaciół i rodziny. Nie jest wymagany e-mail - udostępniaj przez WhatsApp! Twórz magiczne wymiany prezentów w te święta.",
+    "defaultDescription": "Generuj unikalne linki Secret Santa. Bez e-maila - udostępniaj przez WhatsApp! Twórz magiczne wymiany prezentów w te święta.",
     "revealTitle": "Ujawnienie Secret Santa {{participantName}}",
     "revealDescription": "🎅 {{participantName}}, odkryj swoje dopasowanie Secret Santa w te święta!"
   },
