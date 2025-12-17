@@ -1,15 +1,30 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
-import { ResultsComponent } from './components/results/results.component';
-import { RevealComponent } from './components/reveal/reveal.component';
-import { HowItWorksComponent } from './components/how-it-works/how-it-works.component';
-import { AboutComponent } from './components/about/about.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'results', component: ResultsComponent },
-  { path: 'reveal/:token', component: RevealComponent },
-  { path: 'how-it-works', component: HowItWorksComponent },
-  { path: 'about', component: AboutComponent },
+  {
+    path: '', loadComponent() {
+      return import('./components/home/home.component').then(m => m.HomeComponent);
+    }
+  },
+  {
+    path: 'results', loadComponent() {
+      return import('./components/results/results.component').then(m => m.ResultsComponent);
+    }
+  },
+  {
+    path: 'reveal/:token', loadComponent() {
+      return import('./components/reveal/reveal.component').then(m => m.RevealComponent);
+    }
+  },
+  {
+    path: 'how-it-works', loadComponent() {
+      return import('./components/how-it-works/how-it-works.component').then(m => m.HowItWorksComponent);
+    }
+  },
+  {
+    path: 'about', loadComponent() {
+      return import('./components/about/about.component').then(m => m.AboutComponent);
+    }
+  },
   { path: '**', redirectTo: '' }
 ];

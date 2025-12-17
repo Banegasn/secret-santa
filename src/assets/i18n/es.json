@@ -135,9 +135,17 @@
   "language": {
     "switch": "Cambiar Idioma",
     "english": "English",
-    "spanish": "Español"
+    "spanish": "Español",
+    "french": "Français",
+    "german": "Deutsch",
+    "italian": "Italiano",
+    "portuguese": "Português",
+    "japanese": "日本語",
+    "dutch": "Nederlands",
+    "polish": "Polski"
   },
   "footer": {
+    "home": "Inicio",
     "about": "Acerca de",
     "howItWorks": "Cómo Funciona"
   },

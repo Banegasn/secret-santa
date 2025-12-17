@@ -1,7 +1,12 @@
-import { Injectable, signal, computed, effect, inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Injectable, signal, computed, effect, inject, makeStateKey, TransferState, PLATFORM_ID } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 
-export type Language = 'en' | 'es';
+export type Language = 'en' | 'es' | 'fr' | 'de' | 'it' | 'pt' | 'ja' | 'nl' | 'pl';
+
+const VALID_LANGUAGES: Language[] = ['en', 'es', 'fr', 'de', 'it', 'pt', 'ja', 'nl', 'pl'];
+
+export const INITIAL_LANGUAGE = makeStateKey<Language>('INITIAL_LANGUAGE');
+export const TRANSLATIONS_STATE = makeStateKey<Record<Language, Translations>>('TRANSLATIONS_STATE');
 
 export interface Translations {
   [key: string]: string | Translations;
@@ -12,7 +17,11 @@ export interface Translations {
 })
 export class TranslationService {
   readonly #document = inject(DOCUMENT);
-  readonly #translations = signal<Record<Language, Translations>>({ en: {}, es: {} });
+  readonly #transferState = inject(TransferState);
+  readonly #translations = signal<Record<Language, Translations>>({
+    en: {}, es: {}, fr: {}, de: {}, it: {}, pt: {}, ja: {}, nl: {}, pl: {}
+  });
+  readonly #platformId = inject(PLATFORM_ID);
   readonly #currentLanguage = signal<Language>('en');
 
   // Public readonly signal for current language (allows components to track changes)
@@ -22,7 +31,21 @@ export class TranslationService {
   public t = computed(() => this.#translations()[this.#currentLanguage()]);
 
   constructor() {
-    // Load language from localStorage or detect browser language
+    // Load translations from TransferState if available (SSR -> Client transfer)
+    if (this.#transferState.hasKey(TRANSLATIONS_STATE)) {
+      const transferredTranslations = this.#transferState.get(TRANSLATIONS_STATE, {} as Record<Language, Translations>);
+      // Load all transferred translations
+      Object.entries(transferredTranslations).forEach(([lang, translations]) => {
+        if (translations && Object.keys(translations).length > 0) {
+          this.#translations.update(current => ({
+            ...current,
+            [lang as Language]: translations
+          }));
+        }
+      });
+      console.log(`[Client] Loaded translations from TransferState for languages:`, Object.keys(transferredTranslations));
+    }
+
     this.initializeLanguage();
 
     // Update HTML lang attribute when language changes
@@ -35,49 +58,74 @@ export class TranslationService {
   }
 
   private initializeLanguage(): void {
-    // Check subdomain first to force language based on origin
-    if (typeof window !== 'undefined' && window.location) {
-      const hostname = window.location.hostname;
-      const subdomain = hostname.split('.')[0];
+    if (isPlatformBrowser(this.#platformId) && window.location) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const hlParam = urlParams.get('hl');
 
-      // If subdomain starts with "secret-santa", force English
-      if (subdomain.startsWith('secret-santa')) {
-        this.#currentLanguage.set('en');
-        return;
-      }
-
-      // If subdomain is "amigo-invisible", force Spanish
-      if (subdomain === 'amigo-invisible') {
-        this.#currentLanguage.set('es');
+      if (hlParam && VALID_LANGUAGES.includes(hlParam as Language)) {
+        this.#currentLanguage.set(hlParam as Language);
+        // Save to localStorage for future visits
+        if (window.localStorage) {
+          localStorage.setItem('preferredLanguage', hlParam);
+        }
+        console.log(`[Client] Language set from hl query param: ${hlParam}`);
         return;
       }
     }
 
-    // Fall back to localStorage preference
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const saved = localStorage.getItem('preferredLanguage') as Language;
-      if (saved && (saved === 'en' || saved === 'es')) {
-        this.#currentLanguage.set(saved);
+    if (isPlatformBrowser(this.#platformId) && window.localStorage) {
+      const preferredLanguage = localStorage.getItem('preferredLanguage');
+      if (preferredLanguage && VALID_LANGUAGES.includes(preferredLanguage as Language)) {
+        this.#currentLanguage.set(preferredLanguage as Language);
+        console.log(`[Client] Language set from localStorage: ${preferredLanguage}`);
         return;
       }
     }
 
-    // Detect browser language
-    if (typeof navigator !== 'undefined' && navigator.language) {
-      const browserLang = navigator.language.toLowerCase();
-      if (browserLang.startsWith('es')) {
-        this.#currentLanguage.set('es');
-      } else {
-        this.#currentLanguage.set('en');
+    if (this.#transferState.hasKey(INITIAL_LANGUAGE)) {
+      const transferredLang = this.#transferState.get(INITIAL_LANGUAGE, 'en');
+      if (transferredLang && VALID_LANGUAGES.includes(transferredLang)) {
+        this.#currentLanguage.set(transferredLang);
+        console.log(`[Client] Language set from TransferState: ${transferredLang}`);
+        return;
       }
     }
+
+    if (isPlatformBrowser(this.#platformId)) {
+      const navigatorLanguage = navigator.language;
+      const language = navigatorLanguage.split('-')[0] as Language;
+      if (language && VALID_LANGUAGES.includes(language)) {
+        this.#currentLanguage.set(language);
+        console.log(`[Client] Language set from navigator.language: ${language}`);
+        return;
+      }
+    }
+
+    this.#currentLanguage.set('en');
+    console.log(`[Client] Language defaulted to 'en' (no TransferState available)`);
   }
 
   setLanguage(lang: Language): void {
     this.#currentLanguage.set(lang);
+
+    // Immediately update HTML lang attribute (works in both SSR and browser)
+    if (this.#document.documentElement) {
+      this.#document.documentElement.lang = lang;
+    }
+
     if (typeof window !== 'undefined' && window.localStorage) {
       localStorage.setItem('preferredLanguage', lang);
     }
+  }
+
+  /**
+   * Check if translations for a language are loaded
+   * @param lang Language code to check
+   * @returns true if translations are loaded (non-empty)
+   */
+  isLanguageLoaded(lang: Language): boolean {
+    const translations = this.#translations()[lang];
+    return translations && Object.keys(translations).length > 0;
   }
 
   getCurrentLanguage(): Language {

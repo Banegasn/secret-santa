@@ -42,6 +42,7 @@ export class SEOService {
   }
 
   updateSEO(data: SEOData): void {
+
     const title = data.title || this.getDefaultTitle();
     const description = data.description || this.getDefaultDescription();
     const image = data.image || this.getDefaultImage();
@@ -159,9 +160,11 @@ export class SEOService {
       url
     });
 
+    const appTitle = this.#translationService.translate('app.title');
+
     this.addStructuredData({
       type: 'WebApplication',
-      name: this.#translationService.translate('app.title'),
+      name: appTitle,
       description: description,
       url,
       applicationCategory: 'UtilityApplication',
@@ -177,6 +180,7 @@ export class SEOService {
   setRevealPageSEO(participantName: string, assignedTo: string, url: string): void {
     const title = this.#translationService.translate('seo.revealTitle', { participantName });
     const description = this.#translationService.translate('seo.revealDescription', { participantName, assignedTo });
+
     const revealImage = this.getDefaultImage();
 
     this.updateSEO({

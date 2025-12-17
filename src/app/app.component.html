@@ -5,6 +5,8 @@
   <footer class="app-footer">
     <div class="footer-content">
       <nav class="footer-links">
+        <a [routerLink]="['/']" class="footer-link">{{ 'footer.home' | translate }}</a>
+        <span class="footer-separator">•</span>
         <a [routerLink]="['/about']" class="footer-link">{{ 'footer.about' | translate }}</a>
         <span class="footer-separator">•</span>
         <a [routerLink]="['/how-it-works']" class="footer-link">{{ 'footer.howItWorks' | translate }}</a>

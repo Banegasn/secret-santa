@@ -1,6 +1,7 @@
 import { Component, computed, inject, signal, effect, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslationService, Language } from '../../services/translation.service';
+import { TranslationLoaderService } from '../../services/translation-loader.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 
 export interface LanguageOption {
@@ -19,20 +20,25 @@ export interface LanguageOption {
 })
 export class LanguageSwitcherComponent {
   readonly #translationService = inject(TranslationService);
+  readonly #translationLoader = inject(TranslationLoaderService);
   readonly #elementRef = inject(ElementRef);
-  
+
   currentLanguage = signal<Language>(this.#translationService.getCurrentLanguage());
   isOpen = signal(false);
   t = computed(() => this.#translationService.t());
+  isLoadingLanguage = signal(false);
 
   // Easily extensible list of languages
   readonly languages: LanguageOption[] = [
     { code: 'en', name: 'English', nativeName: 'English', flag: '🇬🇧' },
-    { code: 'es', name: 'Spanish', nativeName: 'Español', flag: '🇪🇸' }
-    // Add more languages here as needed:
-    // { code: 'fr', name: 'French', nativeName: 'Français', flag: '🇫🇷' },
-    // { code: 'de', name: 'German', nativeName: 'Deutsch', flag: '🇩🇪' },
-    // { code: 'it', name: 'Italian', nativeName: 'Italiano', flag: '🇮🇹' },
+    { code: 'es', name: 'Spanish', nativeName: 'Español', flag: '🇪🇸' },
+    { code: 'fr', name: 'French', nativeName: 'Français', flag: '🇫🇷' },
+    { code: 'de', name: 'German', nativeName: 'Deutsch', flag: '🇩🇪' },
+    { code: 'it', name: 'Italian', nativeName: 'Italiano', flag: '🇮🇹' },
+    { code: 'pt', name: 'Portuguese', nativeName: 'Português', flag: '🇵🇹' },
+    { code: 'ja', name: 'Japanese', nativeName: '日本語', flag: '🇯🇵' },
+    { code: 'nl', name: 'Dutch', nativeName: 'Nederlands', flag: '🇳🇱' },
+    { code: 'pl', name: 'Polish', nativeName: 'Polski', flag: '🇵🇱' }
   ];
 
   constructor() {
@@ -54,10 +60,28 @@ export class LanguageSwitcherComponent {
     return this.languages.find(lang => lang.code === this.currentLanguage()) || this.languages[0];
   }
 
-  switchLanguage(lang: Language): void {
-    this.#translationService.setLanguage(lang);
-    this.currentLanguage.set(lang);
-    this.isOpen.set(false);
+  async switchLanguage(lang: Language): Promise<void> {
+    // If language is already loaded, switch immediately
+    if (this.#translationLoader.isLanguageLoaded(lang)) {
+      this.#translationService.setLanguage(lang);
+      this.currentLanguage.set(lang);
+      this.isOpen.set(false);
+      return;
+    }
+
+    // Otherwise, load the language first (lazy loading)
+    this.isLoadingLanguage.set(true);
+    try {
+      await this.#translationLoader.loadLanguage(lang);
+      this.#translationService.setLanguage(lang);
+      this.currentLanguage.set(lang);
+      this.isOpen.set(false);
+    } catch (error) {
+      console.error(`Failed to load language ${lang}:`, error);
+      // Fallback to current language on error
+    } finally {
+      this.isLoadingLanguage.set(false);
+    }
   }
 
   toggleDropdown(): void {
