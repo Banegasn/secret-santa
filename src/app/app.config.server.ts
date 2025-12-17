@@ -1,24 +1,21 @@
-import { ApplicationConfig, inject, mergeApplicationConfig, provideAppInitializer } from '@angular/core';
+import { ApplicationConfig, inject, mergeApplicationConfig, provideAppInitializer, TransferState } from '@angular/core';
 import { provideServerRendering } from '@angular/platform-server';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { appConfig } from './app.config';
-import { Language, TranslationService } from './services/translation.service';
+import { INITIAL_LANGUAGE, Language, Translations, TRANSLATIONS_STATE, TranslationService } from './services/translation.service';
 import { SSR_HL_PARAM } from './tokens/ssr-hl-param.token';
 
 // Factory function to preload translations on server
 function preloadTranslationsFactory(
-  translationService: TranslationService
+  translationService: TranslationService,
+  transferState: TransferState
 ): () => void {
   return () => {
     try {
+      const validLanguages = ['en', 'es', 'fr', 'de', 'it', 'pt', 'ja', 'nl', 'pl'];
       const hlParam = inject(SSR_HL_PARAM, { optional: true });
-
-      if (!hlParam) {
-        return; // No language param, let browser handle it
-      }
-
-      const lang = hlParam as Language;
+      const lang = validLanguages.includes(hlParam as Language) ? hlParam as Language : 'en';
 
       // Try common paths for translation files
       const possiblePaths = [
@@ -31,6 +28,8 @@ function preloadTranslationsFactory(
           const langPath = join(basePath, `${lang}.json`);
           const translations = JSON.parse(readFileSync(langPath, 'utf-8'));
           translationService.loadTranslations(lang, translations);
+          transferState.set(INITIAL_LANGUAGE, lang);
+          transferState.set(TRANSLATIONS_STATE, { [lang]: translations } as Record<Language, Translations>);
           console.log(`[SSR] Loaded ${lang} translations from ${basePath}`);
           return;
         } catch {
@@ -51,7 +50,8 @@ const serverConfig: ApplicationConfig = {
     provideServerRendering(),
     provideAppInitializer(() => {
       const translationService = inject(TranslationService);
-      const initializer = preloadTranslationsFactory(translationService);
+      const transferState = inject(TransferState);
+      const initializer = preloadTranslationsFactory(translationService, transferState);
       return initializer();
     })
   ]

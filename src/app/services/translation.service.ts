@@ -25,7 +25,7 @@ export class TranslationService {
   readonly #platformId = inject(PLATFORM_ID);
   readonly #hlParam = inject(SSR_HL_PARAM, { optional: true }) ?? undefined;
 
-  readonly #currentLanguage = signal<Language>('en');
+  readonly #currentLanguage = signal<Language>(this.#transferState.get(INITIAL_LANGUAGE, 'en'));
 
   // Public readonly signal for current language (allows components to track changes)
   readonly currentLanguage = this.#currentLanguage.asReadonly();
