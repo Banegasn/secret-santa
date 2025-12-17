@@ -15,17 +15,13 @@ const app = express();
 const commonEngine = new CommonEngine();
 
 /**
- * Serve static files from /browser
+ * Serve static files from /browser (favicon, assets, etc.)
+ * This must come before the Angular route handler
  */
-app.get(
-  '**',
-  express.static(browserDistFolder, {
-    maxAge: '1y',
-    index: 'index.html'
-  }),
-);
-
-
+app.use(express.static(browserDistFolder, {
+  maxAge: '1y',
+  index: false
+}));
 
 /**
  * Handle all other requests by rendering the Angular application.
