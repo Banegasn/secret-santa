@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, computed, effect, ElementRef, HostListener, inject, signal } from '@angular/core';
+
+import { Component, computed, effect, ElementRef, HostListener, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { TranslationLoaderService } from '../../services/translation-loader.service';
 import { Language, TranslationService } from '../../services/translation.service';
@@ -14,8 +14,9 @@ export interface LanguageOption {
 @Component({
   selector: 'app-language-switcher',
   standalone: true,
-  imports: [CommonModule, TranslatePipe],
+  imports: [TranslatePipe],
   templateUrl: './language-switcher.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './language-switcher.component.css'
 })
 export class LanguageSwitcherComponent {

@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { SEOService } from '../../services/seo.service';
@@ -8,8 +8,9 @@ import { TranslationService } from '../../services/translation.service';
 @Component({
   selector: 'app-how-it-works',
   standalone: true,
-  imports: [CommonModule, TranslatePipe],
+  imports: [TranslatePipe],
   templateUrl: './how-it-works.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './how-it-works.component.css'
 })
 export class HowItWorksComponent implements OnInit {

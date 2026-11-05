@@ -1,5 +1,5 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, effect, ElementRef, inject, OnInit, PLATFORM_ID, signal, viewChildren } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, effect, ElementRef, inject, OnInit, PLATFORM_ID, signal, viewChildren, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '../../pipes/translate.pipe';
@@ -10,8 +10,9 @@ import { TranslationService } from '../../services/translation.service';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [FormsModule, CommonModule, TranslatePipe, RouterLink],
+  imports: [FormsModule, TranslatePipe, RouterLink],
   templateUrl: './home.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {

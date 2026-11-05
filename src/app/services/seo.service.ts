@@ -1,6 +1,6 @@
-import { Injectable, inject, PLATFORM_ID, REQUEST } from '@angular/core';
+import { Injectable, inject, PLATFORM_ID, REQUEST, DOCUMENT } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { TranslationService } from './translation.service';
 
 export interface SEOData {

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { LanguageSwitcherComponent } from './components/language-switcher/language-switcher.component';
 import { TranslationLoaderService } from './services/translation-loader.service';
@@ -7,6 +7,7 @@ import { TranslatePipe } from './pipes/translate.pipe';
   selector: 'app-root',
   imports: [RouterOutlet, RouterLink, LanguageSwitcherComponent, TranslatePipe],
   templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {

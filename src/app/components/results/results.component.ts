@@ -1,5 +1,5 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, inject, OnInit, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '../../pipes/translate.pipe';
@@ -9,8 +9,9 @@ import { TranslationService } from '../../services/translation.service';
 @Component({
   selector: 'app-results',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslatePipe],
+  imports: [FormsModule, TranslatePipe],
   templateUrl: './results.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './results.component.css'
 })
 export class ResultsComponent implements OnInit {

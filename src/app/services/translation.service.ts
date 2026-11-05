@@ -1,5 +1,5 @@
-import { Injectable, signal, computed, effect, inject, makeStateKey, TransferState, PLATFORM_ID } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { Injectable, signal, computed, effect, inject, makeStateKey, TransferState, PLATFORM_ID, DOCUMENT } from '@angular/core';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { SSR_HL_PARAM } from '../tokens/ssr-hl-param.token';
 
 import { Language, VALID_LANGUAGES, normalizeLanguage } from './language';

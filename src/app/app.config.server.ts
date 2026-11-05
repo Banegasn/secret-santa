@@ -1,5 +1,5 @@
+import { provideServerRendering } from '@angular/ssr';
 import { ApplicationConfig, inject, mergeApplicationConfig, provideAppInitializer, TransferState } from '@angular/core';
-import { provideServerRendering } from '@angular/platform-server';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { appConfig } from './app.config';
