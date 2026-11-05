@@ -1,5 +1,5 @@
-import { Component, Input, OnInit, effect, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, OnInit, effect, inject, ChangeDetectionStrategy } from '@angular/core';
+
 import { AmazonAffiliateService, GiftIdea } from '../../services/amazon-affiliate.service';
 import { TranslationService } from '../../services/translation.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
@@ -7,8 +7,9 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
 @Component({
   selector: 'app-gift-suggestions',
   standalone: true,
-  imports: [CommonModule, TranslatePipe],
+  imports: [TranslatePipe],
   templateUrl: './gift-suggestions.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './gift-suggestions.component.css'
 })
 export class GiftSuggestionsComponent implements OnInit {

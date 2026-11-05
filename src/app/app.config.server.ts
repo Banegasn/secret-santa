@@ -1,9 +1,10 @@
+import { provideServerRendering } from '@angular/ssr';
 import { ApplicationConfig, inject, mergeApplicationConfig, provideAppInitializer, TransferState } from '@angular/core';
-import { provideServerRendering } from '@angular/platform-server';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { appConfig } from './app.config';
 import { INITIAL_LANGUAGE, Language, Translations, TRANSLATIONS_STATE, TranslationService } from './services/translation.service';
+import { normalizeLanguage } from './services/language';
 import { SSR_HL_PARAM } from './tokens/ssr-hl-param.token';
 
 // Factory function to preload translations on server
@@ -13,12 +14,12 @@ function preloadTranslationsFactory(
 ): () => void {
   return () => {
     try {
-      const validLanguages = ['en', 'es', 'fr', 'de', 'it', 'pt', 'ja', 'nl', 'pl'];
       const hlParam = inject(SSR_HL_PARAM, { optional: true });
-      const lang = validLanguages.includes(hlParam as Language) ? hlParam as Language : 'en';
+      const lang = normalizeLanguage(hlParam);
 
       // Try common paths for translation files
       const possiblePaths = [
+        join(process.cwd(), 'dist', 'secret-santa', 'browser', 'assets', 'i18n'),
         join(process.cwd(), 'browser', 'assets', 'i18n'),
         join(process.cwd(), 'src', 'assets', 'i18n'),
       ];
@@ -30,7 +31,6 @@ function preloadTranslationsFactory(
           translationService.loadTranslations(lang, translations);
           transferState.set(INITIAL_LANGUAGE, lang);
           transferState.set(TRANSLATIONS_STATE, { [lang]: translations } as Record<Language, Translations>);
-          console.log(`[SSR] Loaded ${lang} translations from ${basePath}`);
           return;
         } catch {
           continue;

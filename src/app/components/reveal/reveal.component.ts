@@ -1,5 +1,5 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, inject, OnInit, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { SecretSantaService } from '../../services/secret-santa.service';
@@ -10,8 +10,9 @@ import { GiftSuggestionsComponent } from '../gift-suggestions/gift-suggestions.c
 @Component({
   selector: 'app-reveal',
   standalone: true,
-  imports: [CommonModule, TranslatePipe, GiftSuggestionsComponent],
+  imports: [TranslatePipe, GiftSuggestionsComponent],
   templateUrl: './reveal.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './reveal.component.css'
 })
 export class RevealComponent implements OnInit {

@@ -1,11 +1,18 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { TranslationService } from './services/translation.service';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
+      providers: [provideRouter([]), provideHttpClient()],
     }).compileComponents();
+    const translations = TestBed.inject(TranslationService);
+    translations.setLanguage('en');
+    translations.loadTranslations('en', { language: { switch: 'Switch language' } });
   });
 
   it('should create the app', () => {
