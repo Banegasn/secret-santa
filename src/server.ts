@@ -22,8 +22,16 @@ const commonEngine = new CommonEngine({
  * This must come before the Angular route handler
  */
 app.use(express.static(browserDistFolder, {
-  maxAge: '1y',
-  index: false
+  maxAge: '1h',
+  index: false,
+  setHeaders(res, filePath) {
+    if (filePath.includes('/assets/i18n/')) {
+      // Translation URLs are not fingerprinted: validate them after each release.
+      res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    } else if (/[-.][A-Za-z0-9_-]{8}\.(?:js|css)$/.test(filePath)) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    }
+  }
 }));
 
 // Missing assets must never enter SSR: doing so can recursively fetch translations.
@@ -34,6 +42,9 @@ app.get(/\.[^/]+$/, (_req, res) => { res.sendStatus(404); });
  * Handle all other requests by rendering the Angular application.
  */
 app.get('**', (req, res, next) => {
+  // SSR varies by language and may contain reveal data from the URL.
+  res.setHeader('Cache-Control', 'private, no-store');
+  res.vary('Accept-Language');
   const { protocol, originalUrl, baseUrl, headers, query } = req;
 
   const host = headers.host || '';
