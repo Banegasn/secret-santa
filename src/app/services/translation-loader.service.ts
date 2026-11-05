@@ -1,4 +1,6 @@
-import { Injectable, inject } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
+import { normalizeLanguage } from './language';
+import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TranslationService, Language } from './translation.service';
 import { firstValueFrom } from 'rxjs';
@@ -8,6 +10,7 @@ import { firstValueFrom } from 'rxjs';
 })
 export class TranslationLoaderService {
   private http = inject(HttpClient);
+  private platformId = inject(PLATFORM_ID);
   private translationService = inject(TranslationService);
 
   // Track which languages are currently being loaded to prevent duplicate requests
@@ -21,7 +24,6 @@ export class TranslationLoaderService {
    */
   async loadInitialLanguage(): Promise<void> {
     const currentLang = this.translationService.getCurrentLanguage();
-    console.log(`[TranslationLoader] Loading initial language: ${currentLang}`);
     await this.loadLanguage(currentLang);
   }
 
@@ -31,6 +33,7 @@ export class TranslationLoaderService {
    * @returns Promise that resolves when the language is loaded
    */
   async loadLanguage(lang: Language): Promise<void> {
+    lang = normalizeLanguage(lang);
     // If already loaded in this service, return immediately
     if (this.loadedLanguages.has(lang)) {
       return;
@@ -39,7 +42,11 @@ export class TranslationLoaderService {
     // Check if TranslationService already has the translations (e.g. from SSR TransferState or preload)
     if (this.translationService.isLanguageLoaded(lang)) {
       this.loadedLanguages.add(lang);
-      console.log(`[TranslationLoader] Language ${lang} already loaded in TranslationService, skipping HTTP request`);
+      return;
+    }
+
+    // SSR preloads from disk. Never issue an HTTP request back to this server.
+    if (isPlatformServer(this.platformId)) {
       return;
     }
 

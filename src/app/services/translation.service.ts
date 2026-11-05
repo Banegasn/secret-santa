@@ -2,9 +2,8 @@ import { Injectable, signal, computed, effect, inject, makeStateKey, TransferSta
 import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { SSR_HL_PARAM } from '../tokens/ssr-hl-param.token';
 
-export type Language = 'en' | 'es' | 'fr' | 'de' | 'it' | 'pt' | 'ja' | 'nl' | 'pl';
-
-const VALID_LANGUAGES: Language[] = ['en', 'es', 'fr', 'de', 'it', 'pt', 'ja', 'nl', 'pl'];
+import { Language, VALID_LANGUAGES, normalizeLanguage } from './language';
+export type { Language } from './language';
 
 export const INITIAL_LANGUAGE = makeStateKey<Language>('INITIAL_LANGUAGE');
 export const TRANSLATIONS_STATE = makeStateKey<Record<Language, Translations>>('TRANSLATIONS_STATE');
@@ -48,7 +47,6 @@ export class TranslationService {
           }));
         }
       });
-      console.log(`[Client] Loaded translations from TransferState for languages:`, Object.keys(transferredTranslations));
     }
 
     // Update HTML lang attribute when language changes
@@ -68,7 +66,6 @@ export class TranslationService {
 
       if (hlParam && VALID_LANGUAGES.includes(hlParam as Language)) {
         this.setLanguage(hlParam as Language);
-        console.log(`[Client] Language set from hl query param: ${hlParam}`);
         return;
       }
     }
@@ -77,14 +74,12 @@ export class TranslationService {
       const preferredLanguage = localStorage.getItem('preferredLanguage');
       if (preferredLanguage && VALID_LANGUAGES.includes(preferredLanguage as Language)) {
         this.setLanguage(preferredLanguage as Language);
-        console.log(`[Client] Language set from localStorage: ${preferredLanguage}`);
         return;
       }
     }
 
     if (isPlatformBrowser(this.#platformId) && window.location.hostname.includes('amigo-invisible')) {
       this.setLanguage('es');
-      console.log(`[Client] Language set from subdomain: es`);
       return;
     }
 
@@ -93,22 +88,20 @@ export class TranslationService {
       const language = navigatorLanguage.split('-')[0] as Language;
       if (language && VALID_LANGUAGES.includes(language)) {
         this.setLanguage(language);
-        console.log(`[Client] Language set from navigator.language: ${language}`);
         return;
       }
     }
 
     if (isPlatformServer(this.#platformId) && this.#hlParam) {
       this.setLanguage(this.#hlParam as Language);
-      console.log(`[Server] Language set from hlParam: ${this.#hlParam}`);
       return;
     }
 
     this.setLanguage('en');
-    console.log(`[${isPlatformBrowser(this.#platformId) ? 'Client' : 'Server'}] Language set to default: en`);
   }
 
   setLanguage(lang: Language): void {
+    lang = normalizeLanguage(lang);
     this.#currentLanguage.set(lang);
 
     // Immediately update HTML lang attribute (works in both SSR and browser)
